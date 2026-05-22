@@ -1,0 +1,51 @@
+import type { Metadata } from "next";
+
+import { projects } from "@/data/projects";
+import { ProjectCard } from "@/components/cards/ProjectCard";
+import { FadeIn } from "@/components/motion/FadeIn";
+import { CTASection } from "@/components/sections/CTASection";
+import { PageHero } from "@/components/sections/PageHero";
+import { Container } from "@/components/ui/Container";
+import { Section } from "@/components/ui/Section";
+import { SectionHeader } from "@/components/ui/SectionHeader";
+
+export const metadata: Metadata = {
+  title: "Projects",
+  description:
+    "Architectural case studies from N&G Partitions across SFS, drylining, suspended ceilings and acoustic commercial interiors."
+};
+
+export default function ProjectsPage() {
+  return (
+    <>
+      <PageHero
+        eyebrow="Projects"
+        image={{
+          src: "/assets/images/hero/open-office-wide.jpeg",
+          alt: "Completed open-plan commercial office with suspended ceiling"
+        }}
+        text="A growing portfolio of commercial interiors presented through image-led case studies and technical scope."
+        title="Case studies with construction substance."
+      />
+
+      <Section className="bg-plaster">
+        <Container>
+          <SectionHeader
+            eyebrow="Selected Work"
+            text="Each project is structured to show scope, technical detail and the quality of the finished or in-progress package."
+            title="Commercial interior packages, documented with clarity."
+          />
+          <div className="mt-14 grid gap-12 lg:grid-cols-2">
+            {projects.map((project, index) => (
+              <FadeIn delay={index * 0.06} key={project.slug}>
+                <ProjectCard large={index === 0} project={project} />
+              </FadeIn>
+            ))}
+          </div>
+        </Container>
+      </Section>
+
+      <CTASection />
+    </>
+  );
+}
