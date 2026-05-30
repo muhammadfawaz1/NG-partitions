@@ -5,7 +5,7 @@ export const site = {
   description:
     "Premium commercial drylining, partitions, suspended ceilings, SFS and acoustic interior packages across the UK.",
   address: "97 Whittlesey Road, Peterborough, PE2 8RW",
-  phone: "00447918406766",
+  phone: "+44 7918 406766",
   email: "ng.partitionsltd@gmail.com"
 };
 
