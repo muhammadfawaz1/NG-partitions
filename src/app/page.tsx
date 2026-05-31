@@ -1,6 +1,7 @@
 import { featuredProjects } from "@/data/projects";
 import { industries, manufacturerSystems, trustSignals, whyChooseUs } from "@/data/site";
 import { services } from "@/data/services";
+import { TestimonialsSection } from "@/components/sections/TestimonialsSection";
 import { ProjectCard } from "@/components/cards/ProjectCard";
 import { ServiceCard } from "@/components/cards/ServiceCard";
 import { FadeIn } from "@/components/motion/FadeIn";
@@ -129,6 +130,8 @@ export default function Home() {
       </Section>
 
       <ProcessSection />
+
+<TestimonialsSection />
 
       <Section className="bg-white">
         <Container>

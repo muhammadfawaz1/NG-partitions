@@ -10,6 +10,7 @@
     "typecheck": "tsc --noEmit"
   },
   "dependencies": {
+    "emailjs-com": "^3.2.0",
     "framer-motion": "latest",
     "lucide-react": "latest",
     "next": "latest",
