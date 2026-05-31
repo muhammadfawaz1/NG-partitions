@@ -1,21 +1,68 @@
-import type { Metadata } from "next";
-import Link from "next/link";
-import { Mail, MapPin, Phone } from "lucide-react";
+"use client";
 
-import { ImageFrame } from "@/components/media/ImageFrame";
+import Link from "next/link";
+import { useState } from "react";
+import { Mail, MapPin, Phone, CheckCircle, AlertCircle } from "lucide-react";
+
 import { PageHero } from "@/components/sections/PageHero";
-import { Button } from "@/components/ui/Button";
 import { Container } from "@/components/ui/Container";
 import { Section } from "@/components/ui/Section";
+import { Button } from "@/components/ui/Button";
 import { site } from "@/data/site";
 
-export const metadata: Metadata = {
-  title: "Contact",
-  description:
-    "Contact N&G Partitions LTD for commercial drylining, partitions, SFS, suspended ceilings and acoustic interior packages."
-};
-
 export default function ContactPage() {
+  const [status, setStatus] = useState<"idle" | "loading" | "success" | "error">("idle");
+  const [userEmail, setUserEmail] = useState("");
+  const [userName, setUserName] = useState("");
+
+  async function handleSubmit(e: React.FormEvent<HTMLFormElement>) {
+    e.preventDefault();
+    setStatus("loading");
+
+    const form = e.currentTarget;
+    const data = new FormData(form);
+
+    // Email 1 — To N&G owner
+    data.append("access_key", "9a0ae4d8-a2c2-44fa-8ad5-fc9756b797cc");
+    data.append("from_name", "N&G Partitions Website");
+    data.append("subject", `New Enquiry from ${userName} - N&G Partitions`);
+
+    // Email 2 — Auto reply to user
+    data.append("replyto", userEmail);
+    data.append("autoresponse_subject", "Thank you for your enquiry - N&G Partitions LTD");
+    data.append("autoresponse_message", `Hi ${userName},
+
+Thank you for contacting N&G Partitions LTD.
+
+We have received your enquiry and one of our team will be in touch with you within 24 hours.
+
+If your matter is urgent, please call us directly on +44 7918 406766.
+
+Kind regards,
+N&G Partitions LTD
++44 7918 406766
+ng.partitionsltd@gmail.com
+97 Whittlesey Road, Peterborough, PE2 8RW`);
+
+    try {
+      const res = await fetch("https://api.web3forms.com/submit", {
+        method: "POST",
+        body: data,
+      });
+      const json = await res.json();
+      if (json.success) {
+        setStatus("success");
+        form.reset();
+        setUserEmail("");
+        setUserName("");
+      } else {
+        setStatus("error");
+      }
+    } catch {
+      setStatus("error");
+    }
+  }
+
   return (
     <>
       <PageHero
@@ -56,25 +103,33 @@ export default function ContactPage() {
                   {site.address}
                 </p>
               </div>
-              <ImageFrame
-                alt="Commercial ceiling and interior finish detail"
-                aspect="aspect-[16/12]"
-                className="mt-10"
-                sizes="(min-width: 1024px) 38vw, 100vw"
-                src="/assets/images/ceilings/ceiling-grid-closeup.jpeg"
-              />
             </div>
 
             <form
-              action={`mailto:${site.email}`}
+              onSubmit={handleSubmit}
               className="rounded-md bg-white p-6 shadow-architectural md:p-8 lg:p-10"
-              encType="text/plain"
-              method="post"
             >
+              {status === "success" && (
+                <div className="mb-6 flex items-center gap-3 rounded-md bg-green-50 px-4 py-4 text-green-700">
+                  <CheckCircle className="h-5 w-5 shrink-0" />
+                  <div>
+                    <p className="text-sm font-medium">Enquiry sent successfully!</p>
+                    <p className="text-sm">We'll be in touch within 24 hours. Check your email for confirmation.</p>
+                  </div>
+                </div>
+              )}
+
+              {status === "error" && (
+                <div className="mb-6 flex items-center gap-3 rounded-md bg-red-50 px-4 py-4 text-red-700">
+                  <AlertCircle className="h-5 w-5 shrink-0" />
+                  <p className="text-sm font-medium">Something went wrong. Please try again or call us directly.</p>
+                </div>
+              )}
+
               <div className="grid gap-6">
                 <div>
                   <label className="mb-2 block text-sm font-medium text-ink" htmlFor="name">
-                    Name
+                    Full Name
                   </label>
                   <input
                     className="h-12 w-full rounded-md border border-ink/15 bg-plaster px-4 text-base text-ink outline-none transition focus:border-oak focus:ring-2 focus:ring-oak/20"
@@ -82,12 +137,14 @@ export default function ContactPage() {
                     name="name"
                     required
                     type="text"
+                    onChange={(e) => setUserName(e.target.value)}
                   />
                 </div>
+
                 <div className="grid gap-6 md:grid-cols-2">
                   <div>
                     <label className="mb-2 block text-sm font-medium text-ink" htmlFor="email">
-                      Email
+                      Email Address
                     </label>
                     <input
                       className="h-12 w-full rounded-md border border-ink/15 bg-plaster px-4 text-base text-ink outline-none transition focus:border-oak focus:ring-2 focus:ring-oak/20"
@@ -95,11 +152,12 @@ export default function ContactPage() {
                       name="email"
                       required
                       type="email"
+                      onChange={(e) => setUserEmail(e.target.value)}
                     />
                   </div>
                   <div>
                     <label className="mb-2 block text-sm font-medium text-ink" htmlFor="phone">
-                      Phone
+                      Phone Number
                     </label>
                     <input
                       className="h-12 w-full rounded-md border border-ink/15 bg-plaster px-4 text-base text-ink outline-none transition focus:border-oak focus:ring-2 focus:ring-oak/20"
@@ -109,6 +167,7 @@ export default function ContactPage() {
                     />
                   </div>
                 </div>
+
                 <div>
                   <label className="mb-2 block text-sm font-medium text-ink" htmlFor="project">
                     Project Type
@@ -125,6 +184,7 @@ export default function ContactPage() {
                     <option>Commercial Fit-Out</option>
                   </select>
                 </div>
+
                 <div>
                   <label className="mb-2 block text-sm font-medium text-ink" htmlFor="message">
                     Message
@@ -136,8 +196,15 @@ export default function ContactPage() {
                     required
                   />
                 </div>
-                <Button className="w-full sm:w-fit" showArrow={false} type="submit" variant="dark">
-                  Send Enquiry
+
+                <Button
+                  className="w-full sm:w-fit"
+                  showArrow={false}
+                  type="submit"
+                  variant="dark"
+                  disabled={status === "loading"}
+                >
+                  {status === "loading" ? "Sending..." : "Send Enquiry"}
                 </Button>
               </div>
             </form>
