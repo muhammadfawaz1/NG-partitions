@@ -1,3 +1,4 @@
+
 export type ProjectService =
   | "sfs"
   | "drylining"
@@ -60,10 +61,10 @@ export const projects: Project[] = [
     featured: true,
     year: "Recent work",
     heroImage: {
-      src: "/assets/images/hero/open-office-wide.jpeg",
-      alt: "Large completed open-plan office with suspended ceiling grid",
-      width: 2048,
-      height: 1405,
+      src: "/assets/images/ceilings/TimberCeilingPackage.png",
+      alt: "Commercial office with timber slat suspended ceiling and integrated lighting",
+      width: 1474,
+      height: 1000,
       role: "hero"
     },
     gallery: [
@@ -120,10 +121,10 @@ export const projects: Project[] = [
     featured: true,
     year: "Recent work",
     heroImage: {
-      src: "/assets/images/sfs/exterior-framework.jpeg",
-      alt: "External steel framing system on a multi-storey building",
-      width: 1126,
-      height: 2000,
+      src: "/assets/images/sfs/StructuralFraming.png",
+      alt: "Steel structural framing system inside commercial construction site",
+      width: 1381,
+      height: 1000,
       role: "hero"
     },
     gallery: [
@@ -166,23 +167,23 @@ export const projects: Project[] = [
     }
   },
   {
-    title: "Drylining Corridor Package",
+    title: "Glass Partition Office",
     slug: "drylining-corridor-package",
     eyebrow: "Drylining / Partitions",
     shortDescription:
-      "Corridor drylining works with service coordination and clean board finish.",
+      "Premium glass partition installation delivering open, light-filled commercial interiors.",
     fullDescription:
-      "This project demonstrates drylining delivery through active construction zones, balancing speed, access, service routes and finish quality across corridor and partition areas.",
+      "This project demonstrates high-specification glass partition delivery through active construction zones, balancing speed, access, service routes and finish quality across corridor and partition areas.",
     services: ["drylining"],
     location: "Commercial interior",
     status: "ongoing",
     featured: true,
     year: "Recent work",
     heroImage: {
-      src: "/assets/images/drylining/corridor-construction.jpeg",
-      alt: "Drylined corridor under construction with service routes above",
-      width: 900,
-      height: 1600,
+      src: "/assets/images/drylining/GlassPartitionOffice.png",
+      alt: "Glass partition corridor in completed commercial office interior",
+      width: 1351,
+      height: 1000,
       role: "hero"
     },
     gallery: [
@@ -202,20 +203,20 @@ export const projects: Project[] = [
       }
     ],
     scope: [
+      "Glass partition systems",
       "Metal stud partitions",
       "Board installation",
-      "Service opening coordination",
-      "Joint preparation"
+      "Service opening coordination"
     ],
     outcomes: [
       "Defined circulation routes",
-      "Prepared wall surfaces",
+      "Premium glass finish",
       "Efficient follow-on trade access"
     ],
     seo: {
-      title: "Drylining Corridor Package | N&G Partitions",
+      title: "Glass Partition Office | N&G Partitions",
       description:
-        "Drylining and partition case study for commercial corridor works."
+        "Glass partition and drylining case study for commercial office interior."
     }
   },
   {
@@ -232,10 +233,10 @@ export const projects: Project[] = [
     featured: true,
     year: "Recent work",
     heroImage: {
-      src: "/assets/images/hero/lobby-reception.jpeg",
-      alt: "Premium commercial lobby with feature wall and linear lighting",
-      width: 1254,
-      height: 836,
+      src: "/assets/images/drylining/Drylining.png",
+      alt: "Premium boardroom with acoustic wall panels and feature ceiling",
+      width: 1170,
+      height: 1000,
       role: "hero"
     },
     gallery: [

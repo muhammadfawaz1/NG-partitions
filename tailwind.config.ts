@@ -21,14 +21,33 @@ const config: Config = {
       },
       fontFamily: {
         sans: ["Inter", "Avenir Next", "Helvetica Neue", "Arial", "sans-serif"],
-        display: ["Optima", "Cormorant Garamond", "Georgia", "serif"]
+        display: ["Cormorant Garamond", "Optima", "Georgia", "serif"]
       },
       boxShadow: {
-        "architectural": "0 24px 70px rgba(18, 20, 22, 0.18)",
-        "soft-line": "inset 0 1px 0 rgba(255,255,255,0.08)"
+        architectural: "0 24px 70px rgba(18, 20, 22, 0.12)",
+        "architectural-lg": "0 40px 100px rgba(18, 20, 22, 0.18)",
+        "soft-line": "inset 0 1px 0 rgba(255,255,255,0.08)",
       },
       transitionTimingFunction: {
-        premium: "cubic-bezier(0.22, 1, 0.36, 1)"
+        premium: "cubic-bezier(0.22, 1, 0.36, 1)",
+      },
+      transitionDuration: {
+        400: "400ms",
+        600: "600ms",
+        800: "800ms",
+      },
+      opacity: {
+        "8": "0.08",
+        "12": "0.12",
+        "15": "0.15",
+        "35": "0.35",
+        "45": "0.45",
+        "55": "0.55",
+        "58": "0.58",
+        "62": "0.62",
+        "65": "0.65",
+        "68": "0.68",
+        "78": "0.78",
       }
     }
   },

@@ -17,13 +17,32 @@ export const navigation = [
   { label: "Contact", href: "/contact" }
 ];
 
+
 export const industries = [
-  "Commercial offices",
-  "Education",
-  "Healthcare",
-  "Retail environments",
-  "Hospitality",
-  "Public sector"
+  {
+    name: "Commercial offices",
+    description: "Open-plan fit-outs, cellular offices and feature spaces."
+  },
+  {
+    name: "Education",
+    description: "Classrooms, corridors and acoustic-sensitive learning environments."
+  },
+  {
+    name: "Healthcare",
+    description: "Clinical spaces requiring precise finishes and hygienic detailing."
+  },
+  {
+    name: "Retail environments",
+    description: "High-footfall retail fit-outs with premium visual finish."
+  },
+  {
+    name: "Hospitality",
+    description: "Hotels, restaurants and leisure spaces with exacting standards."
+  },
+  {
+    name: "Public sector",
+    description: "Government buildings, courts and civic spaces."
+  }
 ];
 
 export const processSteps = [

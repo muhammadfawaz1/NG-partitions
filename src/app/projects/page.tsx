@@ -35,10 +35,11 @@ export default function ProjectsPage() {
             text="Each project is structured to show scope, technical detail and the quality of the finished or in-progress package."
             title="Commercial interior packages, documented with clarity."
           />
-          <div className="mt-14 grid gap-12 lg:grid-cols-2">
+          <div className="mt-14 grid gap-x-8 gap-y-14 lg:grid-cols-2">
             {projects.map((project, index) => (
               <FadeIn delay={index * 0.06} key={project.slug}>
-                <ProjectCard large={index === 0} project={project} />
+                {/* large prop removed — all cards equal */}
+                <ProjectCard project={project} />
               </FadeIn>
             ))}
           </div>

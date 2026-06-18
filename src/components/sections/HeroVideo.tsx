@@ -1,64 +1,138 @@
-import Image from "next/image";
+"use client";
 
-import { Button } from "@/components/ui/Button";
+import Image from "next/image";
+import Link from "next/link";
+import { useEffect, useRef, useState } from "react";
 import { Container } from "@/components/ui/Container";
 
 export function HeroVideo() {
+  const videoRef = useRef<HTMLVideoElement>(null);
+  const [videoLoaded, setVideoLoaded] = useState(false);
+  const [scrollY, setScrollY] = useState(0);
+
+  useEffect(() => {
+    const handleScroll = () => setScrollY(window.scrollY);
+    window.addEventListener("scroll", handleScroll, { passive: true });
+    return () => window.removeEventListener("scroll", handleScroll);
+  }, []);
+
   return (
-    <section className="relative min-h-[92svh] overflow-hidden bg-ink text-plaster">
+    <section className="relative h-screen min-h-[640px] overflow-hidden bg-ink">
       <Image
-        alt="Premium commercial lobby interior by N&G Partitions"
-        className="object-cover"
+        alt="Premium commercial interior by N&G Partitions"
+        className={`object-cover transition-opacity duration-700 ${videoLoaded ? "opacity-0" : "opacity-100"}`}
         fill
         priority
         sizes="100vw"
         src="/assets/images/hero/lobby-reception.jpeg"
       />
+
       <video
+        ref={videoRef}
         aria-hidden="true"
         autoPlay
-        className="motion-video absolute inset-0 h-full w-full origin-left scale-[1.08] object-cover object-left"
+        className="motion-video absolute inset-0 h-full w-full object-cover transition-opacity duration-1000"
         loop
         muted
+        onCanPlayThrough={() => setVideoLoaded(true)}
         playsInline
         poster="/assets/images/hero/lobby-reception.jpeg"
         preload="metadata"
+        style={{
+          opacity: videoLoaded ? 1 : 0,
+          transform: `scale(${1.04 + scrollY * 0.00008}) translateY(${scrollY * 0.18}px)`,
+          transformOrigin: "center center",
+          willChange: "transform",
+        }}
       >
         <source src="/assets/video/hero.mp4" type="video/mp4" />
       </video>
-      <div className="absolute inset-0 bg-gradient-to-r from-ink/90 via-ink/58 to-ink/18" />
-      <div className="absolute inset-0 bg-[linear-gradient(to_bottom,rgba(18,20,22,0.46),rgba(18,20,22,0.04)_42%,rgba(18,20,22,0.76))]" />
-      <div className="absolute inset-y-0 right-0 w-1/2 bg-gradient-to-l from-ink/62 via-ink/20 to-transparent" />
 
-      <Container className="relative flex min-h-[92svh] items-end pb-14 pt-32 md:pb-20 lg:pt-40">
-        <div className="grid w-full gap-10 lg:grid-cols-[minmax(0,0.9fr)_320px] lg:items-end">
-          <div className="max-w-5xl">
-            <p className="mb-5 text-sm font-medium text-concrete">
-              N&G Partitions LTD / UK Commercial Interiors
+      <div className="absolute inset-0 bg-gradient-to-r from-ink/85 via-ink/45 to-ink/10" />
+      <div className="absolute inset-0 bg-gradient-to-t from-ink/80 via-transparent to-ink/30" />
+      <div className="absolute top-0 inset-x-0 h-px bg-white/10" />
+
+      <Container className="relative flex h-screen min-h-[640px] flex-col justify-between pb-12 pt-0">
+
+        <div className="flex items-center justify-between pt-[88px]">
+          <p className="text-[11px] font-medium tracking-[0.18em] uppercase text-white/40">
+            UK Commercial Interiors
+          </p>
+          <p className="hidden text-[11px] font-medium tracking-[0.18em] uppercase text-white/30 md:block">
+            Est. Peterborough
+          </p>
+        </div>
+
+        <div className="max-w-[780px]">
+          <div className="mb-6 flex items-center gap-3">
+            <div className="h-px w-8 bg-oak" />
+            <p className="text-xs font-medium tracking-[0.2em] uppercase text-oak">
+              N&G Partitions LTD
             </p>
-            <h1 className="font-display text-5xl font-normal leading-[0.95] text-white md:text-7xl lg:text-8xl">
-              Drylining & Interior Specialists
-            </h1>
-            <p className="mt-6 max-w-2xl text-xl leading-8 text-plaster/78 md:text-2xl md:leading-9">
-              Precision-built commercial interiors across the UK.
-            </p>
-            <p className="mt-3 max-w-2xl text-base leading-7 text-plaster/62 md:text-lg">
-              Partitions, Suspended Ceilings, SFS & Acoustic Solutions
-            </p>
-            <div className="mt-9 flex flex-col gap-3 sm:flex-row">
-              <Button href="/projects">View Projects</Button>
-              <Button href="/contact" variant="secondary">Get in Touch</Button>
-            </div>
           </div>
 
-          <div className="grid gap-3 border-l border-white/15 pl-5 text-sm text-plaster/68">
-            <p className="text-plaster">Commercial packages</p>
-            <p>SFS / Drylining / Ceilings / Acoustics</p>
-            <p className="pt-4 text-plaster">Based in Peterborough</p>
-            <p>Delivering for commercial sites across the UK.</p>
+          <h1 className="font-display text-[clamp(3rem,8vw,7rem)] font-normal leading-[0.92] tracking-[-0.02em] text-white">
+            Precision<br />
+            <span className="text-white/55">Interior</span><br />
+            Specialists
+          </h1>
+
+          <p className="mt-8 max-w-lg text-lg leading-8 text-white/60 md:text-xl">
+            Drylining, partitions, suspended ceilings & acoustic solutions —
+            delivered with architectural restraint across the UK.
+          </p>
+
+          <div className="mt-10 flex flex-col gap-4 sm:flex-row sm:items-center">
+            <Link
+              href="/projects"
+              className="group inline-flex items-center gap-3 bg-white px-7 py-4 text-sm font-medium tracking-wide text-ink transition-all duration-300 hover:bg-oak hover:text-white"
+            >
+              View Projects
+              <span className="transition-transform duration-300 group-hover:translate-x-1">→</span>
+            </Link>
+            <Link
+              href="/contact"
+              className="group inline-flex items-center gap-3 border border-white/25 px-7 py-4 text-sm font-medium tracking-wide text-white/80 transition-all duration-300 hover:border-white/60 hover:text-white"
+            >
+              Start a Project
+              <span className="transition-transform duration-300 group-hover:translate-x-1">→</span>
+            </Link>
+          </div>
+        </div>
+
+        <div className="flex items-end justify-between border-t border-white/10 pt-6">
+          <div className="flex gap-8 sm:gap-12">
+            {[
+              { value: "SFS", label: "Structural framing" },
+              { value: "Dry", label: "Lining & partitions" },
+              { value: "Acoustic", label: "Interior solutions" },
+            ].map((stat) => (
+              <div key={stat.value}>
+                <p className="text-sm font-medium text-white">{stat.value}</p>
+                <p className="mt-0.5 text-[11px] tracking-wide text-white/35 uppercase">{stat.label}</p>
+              </div>
+            ))}
+          </div>
+
+          <div className="hidden flex-col items-center gap-2 md:flex">
+            <div className="h-10 w-px overflow-hidden bg-white/15">
+              <div
+                className="h-full w-full bg-white/60 origin-top"
+                style={{ animation: "scrollLine 1.8s ease-in-out infinite" }}
+              />
+            </div>
+            <p className="text-[10px] tracking-[0.2em] uppercase text-white/30">Scroll</p>
           </div>
         </div>
       </Container>
+
+      <style>{`
+        @keyframes scrollLine {
+          0% { transform: scaleY(0) translateY(-100%); }
+          50% { transform: scaleY(1) translateY(0); }
+          100% { transform: scaleY(0) translateY(100%); }
+        }
+      `}</style>
     </section>
   );
 }

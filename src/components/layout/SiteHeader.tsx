@@ -3,7 +3,7 @@
 import { useState, useEffect } from "react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { Menu, X } from "lucide-react";
+import { Menu, X, Mail, Phone, MessageSquare } from "lucide-react";
 
 import { navigation, site } from "@/data/site";
 import { cn } from "@/lib/utils";
@@ -27,15 +27,11 @@ export function SiteHeader() {
         ? "border-ink/10 bg-white/95 text-ink backdrop-blur-md"
         : "border-white/10 bg-ink/82 text-plaster backdrop-blur-md"
     )}>
-      <div className="mx-auto flex h-20 max-w-[1440px] items-center justify-between px-5 md:px-8 lg:px-12">
-        <Link
-          aria-label="N&G Partitions home"
-          className="group flex items-center gap-3"
-          href="/"
-          onClick={() => setOpen(false)}
-        >
+      <div className="mx-auto flex h-16 max-w-[1440px] items-center justify-between px-5 md:px-8 lg:px-12">
+        {/* Logo */}
+        <Link aria-label="N&G Partitions home" className="group flex items-center gap-3" href="/" onClick={() => setOpen(false)}>
           <span className={cn(
-            "flex h-10 w-10 items-center justify-center rounded-md border text-sm font-semibold transition-all duration-300",
+            "flex h-9 w-9 items-center justify-center rounded-md border text-xs font-semibold transition-all duration-300",
             scrolled ? "border-ink/20 bg-ink/5 text-ink" : "border-white/15 bg-white/5 text-white"
           )}>
             N&G
@@ -48,16 +44,15 @@ export function SiteHeader() {
           </span>
         </Link>
 
-        <nav aria-label="Main navigation" className="hidden items-center gap-8 lg:flex">
+        {/* Nav links */}
+        <nav aria-label="Main navigation" className="hidden items-center gap-7 lg:flex">
           {navigation.map((item) => {
             const active = pathname === item.href || (item.href !== "/" && pathname.startsWith(item.href));
             return (
               <Link
                 className={cn(
                   "text-sm font-medium transition duration-300",
-                  scrolled
-                    ? "text-ink/70 hover:text-ink"
-                    : "text-plaster/68 hover:text-white",
+                  scrolled ? "text-ink/70 hover:text-ink" : "text-plaster/68 hover:text-white",
                   active && (scrolled ? "text-ink" : "text-white")
                 )}
                 href={item.href}
@@ -69,40 +64,71 @@ export function SiteHeader() {
           })}
         </nav>
 
-        <div className="hidden items-center gap-3 lg:flex">
+        {/* Right actions */}
+        <div className="hidden items-center gap-2 lg:flex">
+          {/* Email icon */}
           <Link
+            href={`mailto:${site.email}`}
+            aria-label="Email us"
             className={cn(
-              "rounded-md border px-4 py-2 text-sm font-medium transition",
-              scrolled
-                ? "border-ink/20 text-ink/80 hover:border-oak hover:text-ink"
-                : "border-white/15 text-plaster/85 hover:border-oak hover:text-white"
+              "flex h-8 w-8 items-center justify-center rounded-full border transition",
+              scrolled ? "border-ink/20 text-ink/60 hover:border-oak hover:text-oak" : "border-white/15 text-white/60 hover:border-oak hover:text-oak"
             )}
-            href={`tel:${site.phone}`}
           >
-            +44 7918 406766
+            <Mail className="h-3.5 w-3.5" />
           </Link>
+          {/* Phone icon */}
           <Link
-            className="rounded-md bg-oak px-4 py-2 text-sm font-medium text-white transition hover:bg-[#94663d]"
+            href={`tel:${site.phone}`}
+            aria-label="Call us"
+            className={cn(
+              "flex h-8 w-8 items-center justify-center rounded-full border transition",
+              scrolled ? "border-ink/20 text-ink/60 hover:border-oak hover:text-oak" : "border-white/15 text-white/60 hover:border-oak hover:text-oak"
+            )}
+          >
+            <Phone className="h-3.5 w-3.5" />
+          </Link>
+
+          {/* Divider */}
+          <div className={cn("mx-1 h-4 w-px", scrolled ? "bg-ink/15" : "bg-white/15")} />
+
+          {/* Get in Touch */}
+          <Link
+            href="/contact"
+            className={cn(
+              "flex items-center gap-2 rounded-md border px-3 py-1.5 text-xs font-medium transition",
+              scrolled ? "border-ink/20 text-ink/80 hover:border-oak hover:text-ink" : "border-white/15 text-plaster/85 hover:border-oak hover:text-white"
+            )}
+          >
+            <MessageSquare className="h-3 w-3 text-oak" />
+            Get in Touch
+          </Link>
+
+          {/* Enquire */}
+          <Link
+            className="rounded-md bg-oak px-4 py-1.5 text-xs font-medium text-white transition hover:bg-[#94663d]"
             href="/contact"
           >
             Enquire
           </Link>
         </div>
 
+        {/* Mobile toggle */}
         <button
           aria-expanded={open}
           aria-label="Toggle navigation"
           className={cn(
-            "inline-flex h-11 w-11 items-center justify-center rounded-md border transition hover:border-white/35 lg:hidden",
+            "inline-flex h-10 w-10 items-center justify-center rounded-md border transition lg:hidden",
             scrolled ? "border-ink/20 text-ink" : "border-white/15 text-plaster"
           )}
           onClick={() => setOpen((v) => !v)}
           type="button"
         >
-          {open ? <X className="h-5 w-5" /> : <Menu className="h-5 w-5" />}
+          {open ? <X className="h-4 w-4" /> : <Menu className="h-4 w-4" />}
         </button>
       </div>
 
+      {/* Mobile menu */}
       <div className={cn(
         "grid overflow-hidden border-t transition-all duration-300 ease-premium lg:hidden",
         scrolled ? "border-ink/10 bg-white" : "border-white/10 bg-ink",
