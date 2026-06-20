@@ -28,7 +28,7 @@ export default function ProjectsPage() {
         title="Case studies with construction substance."
       />
 
-      <Section className="bg-plaster">
+      <Section className="bg-plaster pb-20 lg:pb-28">
         <Container>
           <SectionHeader
             eyebrow="Selected Work"
