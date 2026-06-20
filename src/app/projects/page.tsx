@@ -30,6 +30,7 @@ export default function ProjectsPage() {
 
       <Section className="bg-plaster pb-20 lg:pb-28">
         <Container>
+          
           <SectionHeader
             eyebrow="Selected Work"
             text="Each project is structured to show scope, technical detail and the quality of the finished or in-progress package."
