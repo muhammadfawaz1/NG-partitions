@@ -73,3 +73,35 @@ video {
     display: none;
   }
 }
+
+/* ── Force dark inputs everywhere ── */
+input,
+textarea,
+select {
+  background-color: #1A1A1A !important;
+  color: #F4F0EA !important;
+}
+
+input:hover,
+input:focus,
+input:active,
+textarea:hover,
+textarea:focus,
+textarea:active {
+  background-color: #1A1A1A !important;
+  color: #F4F0EA !important;
+}
+
+/* ── Autofill consistency fix ── */
+input:-webkit-autofill,
+input:-webkit-autofill:hover,
+input:-webkit-autofill:focus,
+input:-webkit-autofill:active,
+textarea:-webkit-autofill,
+textarea:-webkit-autofill:hover,
+textarea:-webkit-autofill:focus {
+  -webkit-box-shadow: 0 0 0 1000px #1A1A1A inset !important;
+  -webkit-text-fill-color: #F4F0EA !important;
+  caret-color: #F4F0EA;
+  transition: background-color 5000s ease-in-out 0s;
+}
