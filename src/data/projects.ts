@@ -1,4 +1,3 @@
-
 export type ProjectService =
   | "sfs"
   | "drylining"
@@ -69,25 +68,25 @@ export const projects: Project[] = [
     },
     gallery: [
       {
-        src: "/assets/images/ceilings/ceiling-grid-closeup.jpeg",
-        alt: "Close detail of suspended ceiling grid with integrated lighting",
+        src: "/assets/images/ceilings/phase1timber.png",
+        alt: "Timber ceiling framework being set out on site",
         width: 1080,
         height: 1152,
-        caption: "Grid alignment, lighting integration and clean perimeter detailing."
+        caption: "Timber ceiling framework being set out on site."
       },
       {
-        src: "/assets/images/hero/open-office-suspended-ceiling-overview.jpeg",
-        alt: "Bright finished commercial interior with ceiling grid",
+        src: "/assets/images/ceilings/phase2timber.png",
+        alt: "Grid alignment and lighting integration mid-install",
         width: 1840,
         height: 1228,
-        caption: "A bright, uniform workspace ready for occupation."
+        caption: "Grid alignment and lighting integration mid-install."
       },
       {
-        src: "/assets/images/ceilings/exposed-ceiling-framework.jpeg",
-        alt: "Exposed ceiling framework before tiles are installed",
+        src: "/assets/images/ceilings/phase3timber.png",
+        alt: "Completed timber ceiling system with full tile installation",
         width: 924,
         height: 2000,
-        caption: "Ceiling framework set out before final tile installation."
+        caption: "Completed timber ceiling system with full tile installation."
       }
     ],
     scope: [
@@ -129,25 +128,25 @@ export const projects: Project[] = [
     },
     gallery: [
       {
-        src: "/assets/images/sfs/interior-framework-wide.jpeg",
-        alt: "Tall internal SFS wall framing inside commercial construction site",
+        src: "/assets/images/sfs/sfsphase1.png",
+        alt: "Steel frame system set out to structural drawings",
         width: 1126,
         height: 2000,
-        caption: "Tall internal framing with clear structural rhythm."
+        caption: "Steel frame system set out to structural drawings."
       },
       {
-        src: "/assets/images/sfs/stud-framework-interior.jpeg",
-        alt: "Interior metal stud framework with service openings",
+        src: "/assets/images/sfs/sfsphase2.png",
+        alt: "Secondary framing and sheathing board progression",
         width: 1244,
         height: 1496,
-        caption: "Openings and stud positions prepared for follow-on trades."
+        caption: "Secondary framing and sheathing board progression."
       },
       {
-        src: "/assets/images/sfs/mixed-structure-interior.jpeg",
-        alt: "Commercial SFS framework with timber backing panels",
+        src: "/assets/images/sfs/spsphase3.png",
+        alt: "Completed SFS envelope ready for facade build-up",
         width: 1324,
         height: 1496,
-        caption: "Frame interfaces coordinated around structure and backing."
+        caption: "Completed SFS envelope ready for facade build-up."
       }
     ],
     scope: [
@@ -188,18 +187,25 @@ export const projects: Project[] = [
     },
     gallery: [
       {
-        src: "/assets/images/drylining/installed-panels.jpeg",
-        alt: "Installed drylining boards on commercial partition wall",
+        src: "/assets/images/drylining/glasspartphase1.png",
+        alt: "Initial framing and partition track layout",
         width: 2048,
         height: 2048,
-        caption: "Board installation progressing cleanly across partition walls."
+        caption: "Initial framing and partition track layout."
       },
       {
-        src: "/assets/images/sfs/stud-framework-interior.jpeg",
-        alt: "Metal stud partition framework before drylining board installation",
+        src: "/assets/images/drylining/glasspartphase2.png",
+        alt: "Glazing panels being fitted into structural frames",
         width: 1244,
         height: 1496,
-        caption: "Stud framework ready for board and service coordination."
+        caption: "Glazing panels being fitted into structural frames."
+      },
+      {
+        src: "/assets/images/drylining/glasspartphase3.png",
+        alt: "Completed glass partition system — bright open interior",
+        width: 1244,
+        height: 1496,
+        caption: "A bright, uniform landscape ready for occupation."
       }
     ],
     scope: [
@@ -241,18 +247,25 @@ export const projects: Project[] = [
     },
     gallery: [
       {
-        src: "/assets/images/hero/wood-slat-corridor.jpeg",
-        alt: "Commercial corridor with timber slat ceiling treatment",
+        src: "/assets/images/acoustics/accousticphase1.png",
+        alt: "Acoustic substrate and backing system installed",
         width: 1612,
         height: 1962,
-        caption: "Timber slat rhythm used to create a composed public interior."
+        caption: "Acoustic substrate and backing system installed."
       },
       {
-        src: "/assets/images/acoustics/black-baffle-acoustic-ceiling.jpeg",
-        alt: "Black acoustic baffles suspended in a commercial corridor",
+        src: "/assets/images/acoustics/accousticphase2.png",
+        alt: "Panel faces aligned and fixed to primary structure",
         width: 1080,
         height: 1274,
-        caption: "Acoustic baffles aligned to the geometry of the corridor."
+        caption: "Panel faces aligned and fixed to primary structure."
+      },
+      {
+        src: "/assets/images/acoustics/accousticphase3.png",
+        alt: "High-performance acoustic wall system fully dressed",
+        width: 1080,
+        height: 1274,
+        caption: "High-performance acoustic wall system fully dressed."
       }
     ],
     scope: [

@@ -57,19 +57,11 @@ export default function Home() {
       <div className="border-t border-ink/8" />
       <Section className="bg-plaster py-24 md:py-32">
         <Container>
-          <div className="flex items-end justify-between border-b border-ink/8 pb-10">
-            <div>
-              <p className="mb-4 text-[11px] font-medium tracking-[0.2em] uppercase text-oak">Featured Projects</p>
-              <h2 className="font-display text-[clamp(2rem,4vw,3.6rem)] font-normal leading-[1.0] tracking-[-0.02em] text-ink">
-                Recent work with the clarity of a portfolio, not a gallery dump.
-              </h2>
-            </div>
-            <Link
-              href="/projects"
-              className="hidden shrink-0 items-center gap-2 border border-ink/12 px-5 py-3 text-sm font-medium text-ink/50 transition-all hover:border-oak hover:text-ink md:inline-flex"
-            >
-              View Case Studies →
-            </Link>
+          <div className="border-b border-ink/8 pb-10">
+            <p className="mb-4 text-[11px] font-medium tracking-[0.2em] uppercase text-oak">Featured Projects</p>
+            <h2 className="font-display text-[clamp(2.2rem,4.2vw,3.8rem)] font-normal leading-[1.05] tracking-[-0.02em] text-ink">
+              Recent project work, shown with the same clarity and discipline we bring to site delivery.
+            </h2>
           </div>
           <div className="mt-12 grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-4">
             {featuredProjects.slice(0, 4).map((project, index) => (
@@ -121,15 +113,6 @@ export default function Home() {
               <p className="mt-6 text-base leading-7 text-ink/50">
                 The business is positioned for clients who need confidence before, during and after site delivery.
               </p>
-              <div className="mt-10">
-                <Link
-                  href="/about"
-                  className="group inline-flex items-center gap-2 border border-ink/12 px-6 py-3.5 text-sm font-medium text-ink/60 transition-all hover:border-oak hover:text-ink"
-                >
-                  Our Approach
-                  <span className="transition-transform duration-300 group-hover:translate-x-1">→</span>
-                </Link>
-              </div>
             </FadeIn>
             <div className="grid grid-cols-2 gap-0">
               {whyChooseUs.map((item, index) => (
@@ -187,56 +170,56 @@ export default function Home() {
       <ProcessSection />
       <TestimonialsSection />
 
-      {/* TRUST SIGNALS */}
+      {/* TRUST SIGNALS — flat fact panels, deliberately not styled as cards/buttons */}
       <Section className="bg-[#f5f0e8] py-24 md:py-32">
         <Container>
-          <div className="grid gap-6 lg:grid-cols-2">
+          <div className="grid gap-10 lg:grid-cols-2">
             <FadeIn>
               <p className="mb-4 border-b border-[#e0d8cc] pb-3 text-[10px] font-medium uppercase tracking-[0.16em] text-ink/40">
                 Accreditations & Compliance
               </p>
-              <div className="grid grid-cols-2 gap-2">
-                {[
-                  { label: "RAMS-led planning", sub: "Risk & method statements" },
-                  { label: "Qualified site teams", sub: "Trained & accredited operatives" },
-                  { label: "Manufacturer-aligned systems", sub: "Spec-matched installations" },
-                  { label: "Documentation-ready handover", sub: "Full O&M pack on completion" },
-                ].map((item) => (
-                  <div key={item.label} className="flex flex-col gap-2 rounded-lg border border-[#e8e0d4] bg-white p-4">
-                    <div className="flex h-7 w-7 shrink-0 items-center justify-center rounded-md border border-[#f0e0cc] bg-[#fdf6ee] text-sm text-oak">
-                      ✓
+              <div className="rounded-lg border border-[#e8e0d4] bg-white px-6">
+                <div className="divide-y divide-[#ece4d8]">
+                  {[
+                    { label: "RAMS-led planning", sub: "Risk & method statements" },
+                    { label: "Qualified site teams", sub: "Trained & accredited operatives" },
+                    { label: "Manufacturer-aligned systems", sub: "Spec-matched installations" },
+                    { label: "Documentation-ready handover", sub: "Full O&M pack on completion" },
+                  ].map((item) => (
+                    <div key={item.label} className="flex items-center gap-4 py-4">
+                      <span className="text-sm font-medium text-oak" aria-hidden="true">
+                        ✓
+                      </span>
+                      <div>
+                        <p className="text-sm font-medium text-ink">{item.label}</p>
+                        <p className="text-xs text-ink/40">{item.sub}</p>
+                      </div>
                     </div>
-                    <div>
-                      <p className="text-base font-medium text-ink">{item.label}</p>
-                      <p className="text-xs text-ink/40">{item.sub}</p>
-                    </div>
-                  </div>
-                ))}
+                  ))}
+                </div>
               </div>
             </FadeIn>
+
             <FadeIn delay={0.08}>
               <p className="mb-4 border-b border-[#e0d8cc] pb-3 text-[10px] font-medium uppercase tracking-[0.16em] text-ink/40">
                 Specified Systems
               </p>
-              <div className="grid grid-cols-3 gap-2">
-                {[
-                  { name: "British Gypsum", sub: "Drylining & boards", color: "bg-[#eef4fd] border-[#ccddf5] text-[#3a6fbf]", icon: "▦" },
-                  { name: "Knauf", sub: "Partition boards", color: "bg-[#fdf6ee] border-[#f0e0cc] text-oak", icon: "⬡" },
-                  { name: "Armstrong", sub: "Ceiling tiles", color: "bg-[#eef7ee] border-[#cce5cc] text-[#3a7a3a]", icon: "⊞" },
-                  { name: "Gypframe", sub: "Steel framing", color: "bg-[#f0f2f5] border-[#d0d5dd] text-[#556080]", icon: "⊟" },
-                  { name: "Rockfon", sub: "Acoustic wool", color: "bg-[#fdf0f0] border-[#f5cccc] text-[#bf4040]", icon: "≋" },
-                  { name: "SAS Ceilings", sub: "Bespoke solutions", color: "bg-[#eef8f5] border-[#bbe0d5] text-[#2a7a65]", icon: "⊡" },
-                ].map((item) => (
-                  <div key={item.name} className="flex flex-col items-center gap-2 rounded-lg border border-[#e8e0d4] bg-white p-3 text-center">
-                    <div className={`flex h-9 w-9 items-center justify-center rounded-lg border text-lg ${item.color}`}>
-                      {item.icon}
+              <div className="rounded-lg border border-[#e8e0d4] bg-white">
+                <div className="flex flex-wrap divide-x divide-[#ece4d8]">
+                  {[
+                    { name: "British Gypsum", sub: "Drylining & boards" },
+                    { name: "Knauf", sub: "Partition boards" },
+                    { name: "Armstrong", sub: "Ceiling tiles" },
+                    { name: "Gypframe", sub: "Steel framing" },
+                    { name: "Rockfon", sub: "Acoustic wool" },
+                    { name: "SAS Ceilings", sub: "Bespoke solutions" },
+                  ].map((item) => (
+                    <div key={item.name} className="flex-1 basis-1/3 min-w-[140px] px-5 py-5 text-center">
+                      <p className="text-xs font-medium uppercase tracking-[0.04em] text-ink/70">{item.name}</p>
+                      <p className="mt-1 text-[10px] text-ink/35">{item.sub}</p>
                     </div>
-                    <div>
-                      <p className="text-[11px] font-semibold text-ink">{item.name}</p>
-                      <p className="text-[10px] text-ink/40">{item.sub}</p>
-                    </div>
-                  </div>
-                ))}
+                  ))}
+                </div>
               </div>
             </FadeIn>
           </div>

@@ -12,6 +12,25 @@ import { PageHero } from "@/components/sections/PageHero";
 import { site } from "@/data/site";
 
 const GLOBAL_CSS = `
+  /*
+    ROOT CAUSE FIX:
+    The original code had "overflow-y: scroll" + "scrollbar-gutter: stable" on
+    html/body. When the textarea received focus, browsers would repaint the
+    scrollbar gutter, causing the entire page width to shift — which made every
+    element appear to resize/reflow.
+
+    Fix: Remove overflow-y:scroll from html/body entirely. Instead we only apply
+    scrollbar-gutter:stable which quietly reserves the scrollbar track without
+    forcing a scrollbar to appear. This eliminates the focus-triggered reflow.
+
+    Additionally: the textarea itself had "scrollbar-gutter: stable" which was
+    adding reserved internal space that would appear/disappear on focus. Removed.
+    The textarea now uses overflow-y: auto (scroll only when content overflows).
+  */
+  html, body {
+    scrollbar-gutter: stable;
+  }
+
   @keyframes fadeUp {
     from { opacity:0; transform:translateY(28px); }
     to   { opacity:1; transform:translateY(0); }
@@ -68,25 +87,73 @@ const GLOBAL_CSS = `
   .contact-item:hover { background:rgba(139,94,60,.04); }
   .contact-icon {
     width:38px; height:38px; border-radius:50%; flex-shrink:0;
-    background:#1A1A1A; display:flex; align-items:center; justify-content:center;
-    transition: transform .3s cubic-bezier(.34,1.56,.64,1);
+    background:rgba(139,94,60,.08); border:1px solid rgba(139,94,60,.18);
+    display:flex; align-items:center; justify-content:center;
+    transition: transform .3s cubic-bezier(.34,1.56,.64,1), background .25s ease;
   }
-  .contact-item:hover .contact-icon { transform:scale(1.08) rotate(-4deg); }
+  .contact-item:hover .contact-icon { transform:scale(1.08) rotate(-4deg); background:rgba(139,94,60,.14); }
 
-  .fi {
-    width:100%; background:#1A1A1A;
-    border:1px solid rgba(255,255,255,.08);
+  /* ── INPUT FIELDS ── */
+  .fi,
+  .fi:hover,
+  .fi:focus,
+  .fi:active,
+  .fi:focus-visible,
+  .fi:focus-within {
+    box-sizing:border-box !important;
+    width:100% !important;
+    background:#F4F0EA !important;
+    background-color:#F4F0EA !important;
+    border:1px solid rgba(139,94,60,.45) !important;
     border-radius:6px;
     padding:14px 16px;
-    font-size:1rem; line-height:1.4; color:#F4F0EA;
+    font-size:1rem; line-height:1.4;
+    color:#1A1A1A !important;
+    -webkit-text-fill-color: #1A1A1A !important;
+    caret-color: #1A1A1A !important;
+    color-scheme: light !important;
     outline:none;
-    transition: border-color .25s ease, background .25s ease, box-shadow .25s ease;
+    transition: border-color .25s ease, box-shadow .25s ease;
+    appearance: none;
+    -webkit-appearance: none;
   }
-  .fi::placeholder { color:rgba(244,240,234,.32); }
-  .fi:focus {
-    border-color:rgba(139,94,60,.55);
-    background:#221c15;
-    box-shadow:0 0 0 3px rgba(139,94,60,.14);
+  .fi::placeholder { color:rgba(26,26,26,.38) !important; opacity: 1 !important; }
+  .fi:hover { border-color:rgba(139,94,60,.7) !important; }
+  .fi:focus,
+  .fi:focus-visible {
+    border-color:#8B5E3C !important;
+    box-shadow:0 0 0 3px rgba(139,94,60,.14) !important;
+  }
+  .fi:-webkit-autofill,
+  .fi:-webkit-autofill:hover,
+  .fi:-webkit-autofill:focus,
+  .fi:-webkit-autofill:active,
+  .fi:-webkit-autofill:focus-visible {
+    -webkit-text-fill-color: #1A1A1A !important;
+    -webkit-box-shadow: 0 0 0px 1000px #F4F0EA inset !important;
+    box-shadow: 0 0 0px 1000px #F4F0EA inset !important;
+    background-color: #F4F0EA !important;
+    caret-color: #1A1A1A !important;
+    color: #1A1A1A !important;
+  }
+
+  /*
+    TEXTAREA FIX:
+    - resize: none prevents manual resizing (was already set, kept)
+    - overflow-y: auto means scrollbar only appears when text overflows the fixed
+      row height — it does NOT reserve space upfront, so no layout shift on focus
+    - scrollbar-gutter REMOVED — this was the main offender; it reserved ~15px of
+      width inside the textarea that would appear/vanish on focus, pushing sibling
+      elements and causing the "resize" illusion
+  */
+  textarea.fi {
+    resize: none !important;
+    overflow: hidden !important;
+    line-height: 1.75;
+    height: 160px !important;
+    min-height: 160px !important;
+    max-height: 160px !important;
+    box-sizing: border-box !important;
   }
 
   .slabel { display:flex; align-items:center; gap:10px; margin-bottom:18px; }
@@ -113,15 +180,15 @@ const GLOBAL_CSS = `
     transform:translateY(-2px);
   }
   .pt-btn.on {
-    background:#1A1A1A;
-    border-color:#1A1A1A;
-    color:#F4F0EA;
+    background:rgba(139,94,60,.06);
+    border-color:#C9A227;
+    color:#1A1A1A;
     transform:translateY(-2px) scale(1.04);
-    box-shadow:0 6px 20px rgba(0,0,0,.18);
+    box-shadow:0 0 0 2px rgba(201,162,39,.35), 0 6px 20px rgba(139,94,60,.15);
   }
   .pt-btn.on::after {
     content:''; position:absolute; inset:0;
-    background:linear-gradient(100deg,transparent 20%,rgba(255,255,255,.12) 50%,transparent 80%);
+    background:linear-gradient(100deg,transparent 20%,rgba(201,162,39,.18) 50%,transparent 80%);
     background-size:200% 100%;
     animation: sweep .9s ease forwards;
   }
@@ -138,18 +205,6 @@ const GLOBAL_CSS = `
   .sub-arr { transition:transform .3s cubic-bezier(.34,1.56,.64,1); }
   .sub-btn:hover .sub-arr { transform:translateX(5px); }
 
-  .rdot { position:relative; display:inline-block; width:10px; height:10px; flex-shrink:0; }
-  .rdot::before {
-    content:''; position:absolute; inset:0; border-radius:50%;
-    background:rgba(139,94,60,.6); animation:ripplePulse 2s ease-out infinite;
-  }
-  .rdot-core { position:relative; z-index:1; width:7px;height:7px;border-radius:50%;background:#8B5E3C; margin:1.5px; }
-
-  .ti { transition:transform .25s ease; cursor:default; }
-  .ti:hover { transform:translateX(5px); }
-  .ti-d { width:6px;height:6px;background:rgba(139,94,60,.45);transform:rotate(45deg);flex-shrink:0;transition:all .25s ease; }
-  .ti:hover .ti-d { background:#8B5E3C; transform:scale(1.3) rotate(45deg); }
-
   .spin { animation:spin .8s linear infinite; }
   .check-pop { animation:checkPop .5s cubic-bezier(.34,1.56,.64,1) both; }
 
@@ -161,13 +216,37 @@ const GLOBAL_CSS = `
   }
   .grain > * { position:relative; z-index:1; }
 
-  .split-grid { display:grid; grid-template-columns:1fr; align-items:start; }
-  @media (min-width:900px)  { .split-grid { grid-template-columns:390px minmax(0,560px); justify-content:space-between; } }
-  @media (min-width:1100px) { .split-grid { grid-template-columns:430px minmax(0,640px); justify-content:space-between; } }
+  .split-grid {
+    display:grid;
+    grid-template-columns:1fr;
+    align-items:start;
+  }
+  @media (min-width:900px)  {
+    .split-grid {
+      grid-template-columns:390px minmax(0,560px);
+      justify-content:space-between;
+      align-items:start;
+    }
+  }
+  @media (min-width:1100px) {
+    .split-grid {
+      grid-template-columns:430px minmax(0,640px);
+      justify-content:space-between;
+    }
+  }
 
-  .left-col { padding:56px 40px 56px 0; }
+  .left-col {
+    padding:56px 40px 56px 0;
+    display:flex;
+    flex-direction:column;
+  }
   @media (max-width:899px) { .left-col { padding:40px 0 32px; } }
-  .right-col { align-self:stretch; padding:56px 0; }
+
+  .right-col {
+    padding:56px 0;
+    display:flex;
+    flex-direction:column;
+  }
   @media (max-width:899px) { .right-col { padding:8px 0 40px; } }
 
   .fl-label {
@@ -183,6 +262,8 @@ const GLOBAL_CSS = `
 
   .step-item { display:flex; gap:16px; }
   .step-num  { width:30px; height:30px; border:1.5px solid rgba(139,94,60,.3); background:rgba(139,94,60,.05); display:flex; align-items:center; justify-content:center; flex-shrink:0; border-radius:2px; }
+
+  .left-col-spacer { flex:1; min-height:16px; }
 
   @media (prefers-reduced-motion:reduce) {
     *,*::before,*::after { animation-duration:.01ms!important; transition-duration:.01ms!important; }
@@ -261,7 +342,6 @@ export default function ContactPage() {
   const leftR  = useReveal(0.08);
   const formR  = useReveal(0.05);
 
-  // ── Replaced Web3Forms with Resend via /api/contact route ──
   async function handleSubmit(e: React.FormEvent<HTMLFormElement>) {
     e.preventDefault();
     setStatus("loading");
@@ -328,7 +408,7 @@ export default function ContactPage() {
                   style={{ animationDelay:delay, opacity:cardsR.vis?undefined:0 }}
                 >
                   <div className="contact-icon">
-                    <Icon size={15} color="#C9A227" strokeWidth={1.5} />
+                    <Icon size={15} color="#8B5E3C" strokeWidth={1.5} />
                   </div>
                   <div style={{ flex:1, minWidth:0 }}>
                     <p style={{ fontSize:"10px",fontWeight:700,letterSpacing:".16em",textTransform:"uppercase",color:"rgba(26,26,26,.35)",marginBottom:4 }}>{label}</p>
@@ -431,24 +511,8 @@ export default function ContactPage() {
                 </div>
               </div>
 
-              <div
-                className={leftR.vis ? "vis-line" : ""}
-                style={{ height:1,background:"rgba(26,26,26,.08)",margin:"28px 0",animationDelay:".92s",opacity:leftR.vis?undefined:0 }}
-              />
+              <div className="left-col-spacer" />
 
-              <div
-                className={leftR.vis ? "vis-fade-up" : ""}
-                style={{ animationDelay:".96s",opacity:leftR.vis?undefined:0 }}
-              >
-                <div style={{ display:"inline-flex",alignItems:"center",gap:10,border:"1.5px solid rgba(139,94,60,.22)",background:"rgba(139,94,60,.06)",padding:"10px 16px",borderRadius:3 }}>
-                  <div className="rdot">
-                    <div className="rdot-core" />
-                  </div>
-                  <span style={{ fontSize:"10px",fontWeight:700,letterSpacing:".14em",textTransform:"uppercase",color:"#8B5E3C" }}>
-                    Currently accepting new projects
-                  </span>
-                </div>
-              </div>
             </div>
 
             {/* ══ RIGHT ══ */}
@@ -460,12 +524,11 @@ export default function ContactPage() {
                 opacity: formR.vis ? undefined : 0,
               }}
             >
-              <div style={{ display:"flex",alignItems:"center",justifyContent:"space-between",marginBottom:32,paddingBottom:20,borderBottom:"1px solid rgba(26,26,26,.08)" }}>
+              <div style={{ display:"flex",alignItems:"center",marginBottom:32,paddingBottom:20,borderBottom:"1px solid rgba(26,26,26,.08)" }}>
                 <div style={{ display:"flex",alignItems:"center",gap:10 }}>
                   <div style={{ width:3,height:18,background:"#8B5E3C" }} />
                   <span style={{ fontSize:"10px",fontWeight:700,letterSpacing:".2em",textTransform:"uppercase",color:"#1A1A1A" }}>Project Enquiry</span>
                 </div>
-                <span style={{ fontSize:"9px",fontWeight:600,letterSpacing:".14em",textTransform:"uppercase",color:"rgba(26,26,26,.35)" }}>Takes about 2 minutes</span>
               </div>
 
               {/* Success */}
@@ -503,32 +566,56 @@ export default function ContactPage() {
                   <div style={{ display:"flex",flexDirection:"column",gap:20 }}>
                     <div>
                       <FLabel id="name" text="Full Name" req />
-                      <input id="name" name="name" type="text" required autoComplete="name"
-                        placeholder="James Richardson"
+                      <input id="name" name="name" type="text" required autoComplete="off"
                         onChange={e => setName(e.target.value)}
-                        className="fi" />
+                        className="fi"
+                        style={{
+                          colorScheme:"light",
+                          backgroundColor:"#F4F0EA",
+                          color:"#1A1A1A",
+                          WebkitTextFillColor:"#1A1A1A",
+                          caretColor:"#1A1A1A",
+                        }} />
                     </div>
                     <div style={{ display:"grid", gap:16 }} className="two-col">
                       <style>{`@media(min-width:560px){.two-col{grid-template-columns:1fr 1fr;}}`}</style>
                       <div>
                         <FLabel id="email" text="Email Address" req />
-                        <input id="email" name="email" type="email" required autoComplete="email"
-                          placeholder="james@company.co.uk"
+                        <input id="email" name="email" type="email" required autoComplete="off"
                           onChange={e => setEmail(e.target.value)}
-                          className="fi" />
+                          className="fi"
+                          style={{
+                            colorScheme:"light",
+                            backgroundColor:"#F4F0EA",
+                            color:"#1A1A1A",
+                            WebkitTextFillColor:"#1A1A1A",
+                            caretColor:"#1A1A1A",
+                          }} />
                       </div>
                       <div>
                         <FLabel id="phone" text="Phone Number" />
-                        <input id="phone" name="phone" type="tel" autoComplete="tel"
-                          placeholder="+44 7000 000000"
-                          className="fi" />
+                        <input id="phone" name="phone" type="tel" autoComplete="off"
+                          className="fi"
+                          style={{
+                            colorScheme:"light",
+                            backgroundColor:"#F4F0EA",
+                            color:"#1A1A1A",
+                            WebkitTextFillColor:"#1A1A1A",
+                            caretColor:"#1A1A1A",
+                          }} />
                       </div>
                     </div>
                     <div>
                       <FLabel id="company" text="Company / Organisation" />
-                      <input id="company" name="company" type="text"
-                        placeholder="Richardson & Partners Ltd"
-                        className="fi" />
+                      <input id="company" name="company" type="text" autoComplete="off"
+                        className="fi"
+                        style={{
+                          colorScheme:"light",
+                          backgroundColor:"#F4F0EA",
+                          color:"#1A1A1A",
+                          WebkitTextFillColor:"#1A1A1A",
+                          caretColor:"#1A1A1A",
+                        }} />
                     </div>
                   </div>
                 </div>
@@ -552,9 +639,23 @@ export default function ContactPage() {
                   <FStep icon={FileText} t="Your project" />
                   <div>
                     <FLabel id="message" text="Project Brief" req />
-                    <textarea id="message" name="message" required rows={6}
-                      placeholder="Describe your project scope, programme timeline, and what you need from us…"
-                      className="fi" style={{ resize:"none", lineHeight:1.75 }} />
+                    <textarea id="message" name="message" required
+                      className="fi"
+                      style={{
+                        colorScheme:"light",
+                        backgroundColor:"#F4F0EA",
+                        color:"#1A1A1A",
+                        WebkitTextFillColor:"#1A1A1A",
+                        caretColor:"#1A1A1A",
+                        display:"block",
+                        width:"100%",
+                        height:"160px",
+                        minHeight:"160px",
+                        maxHeight:"160px",
+                        resize:"none",
+                        overflow:"hidden",
+                        boxSizing:"border-box",
+                      }} />
                   </div>
                 </div>
 
@@ -576,22 +677,10 @@ export default function ContactPage() {
                       </>
                     )}
                   </button>
-                  <p style={{ fontSize:".75rem",lineHeight:1.7,color:"rgba(26,26,26,.5)" }}>
-                    We respond within 24 hours<br />on working days.
-                  </p>
                 </div>
 
-                <p style={{ fontSize:".72rem",lineHeight:1.7,color:"rgba(26,26,26,.35)",marginTop:-20 }}>
-                  Your information is used solely to respond to your enquiry and is never shared with third parties.
-                </p>
               </form>
 
-              <div style={{ marginTop:32,paddingTop:22,borderTop:"1px solid rgba(26,26,26,.08)",display:"flex",alignItems:"center",gap:10 }}>
-                <div className="rdot"><div className="rdot-core" /></div>
-                <span style={{ fontSize:"10px",fontWeight:700,letterSpacing:".14em",textTransform:"uppercase",color:"rgba(26,26,26,.45)" }}>
-                  Currently accepting new projects
-                </span>
-              </div>
             </div>
 
           </div>

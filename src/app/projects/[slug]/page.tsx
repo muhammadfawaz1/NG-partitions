@@ -2,14 +2,12 @@ import type { Metadata } from "next";
 import { notFound } from "next/navigation";
 
 import { getProject, projects, serviceLabels } from "@/data/projects";
-import { ImageFrame } from "@/components/media/ImageFrame";
 import { CTASection } from "@/components/sections/CTASection";
-import { PageHero } from "@/components/sections/PageHero";
 import { Container } from "@/components/ui/Container";
-import { Section } from "@/components/ui/Section";
-import { SectionHeader } from "@/components/ui/SectionHeader";
-import { Tag } from "@/components/ui/Tag";
+import { GalleryLightbox } from "@/components/GalleryLightbox";
 import { formatStatus } from "@/lib/utils";
+import Link from "next/link";
+import Image from "next/image";
 
 type ProjectPageProps = {
   params: Promise<{ slug: string }>;
@@ -22,127 +20,611 @@ export function generateStaticParams() {
 export async function generateMetadata({ params }: ProjectPageProps): Promise<Metadata> {
   const { slug } = await params;
   const project = getProject(slug);
-
-  if (!project) {
-    return {};
-  }
-
+  if (!project) return {};
   return {
     title: project.seo.title.replace(" | N&G Partitions", ""),
     description: project.seo.description,
     openGraph: {
       title: project.seo.title,
       description: project.seo.description,
-      images: [project.heroImage.src]
-    }
+      images: [project.heroImage.src],
+    },
   };
 }
 
 export default async function ProjectDetailPage({ params }: ProjectPageProps) {
   const { slug } = await params;
   const project = getProject(slug);
+  if (!project) notFound();
 
-  if (!project) {
-    notFound();
-  }
-
-  const tags = [
-    ...project.services.map((service) => serviceLabels[service]),
-    project.status ? formatStatus(project.status) : "",
-    project.location ?? ""
-  ].filter(Boolean);
+  const currentIndex = projects.findIndex((p) => p.slug === slug);
+  const nextProject = projects[(currentIndex + 1) % projects.length];
 
   return (
     <>
-      <PageHero
-        eyebrow={project.eyebrow}
-        image={{
-          src: project.heroImage.src,
-          alt: project.heroImage.alt
+      {/* ── HERO ── */}
+      <div className="relative min-h-[100vh] overflow-hidden bg-ink">
+        <Image
+          src={project.heroImage.src}
+          alt={project.heroImage.alt}
+          fill
+          priority
+          className="object-cover opacity-60"
+          sizes="100vw"
+        />
+        <div className="absolute inset-0 bg-gradient-to-b from-black/20 via-black/30 to-black/85" />
+
+        <div className="absolute top-6 left-8 flex items-center gap-3 z-10">
+          <Link
+            href="/projects"
+            className="text-[9px] font-bold tracking-[.18em] uppercase text-white/40 hover:text-white/70 transition-colors"
+          >
+            Projects
+          </Link>
+          <span className="text-white/20 text-[9px]">→</span>
+          <span className="text-[9px] font-bold tracking-[.12em] uppercase text-white/60">
+            {project.title}
+          </span>
+        </div>
+
+        <div className="absolute top-6 right-8 flex gap-2 z-10">
+          {project.services.map((s) => (
+            <span
+              key={s}
+              className="border border-oak/40 bg-oak/15 text-oak px-3 py-1 text-[8px] font-bold tracking-[.12em] uppercase rounded-sm"
+            >
+              {serviceLabels[s]}
+            </span>
+          ))}
+        </div>
+
+        <div className="absolute bottom-0 left-0 right-0 z-10">
+          <Container>
+            <div className="pb-14">
+              <div className="flex items-center gap-3 mb-4">
+                <div className="h-px w-6 bg-oak" />
+                <span className="text-[9px] font-bold tracking-[.2em] uppercase text-oak">
+                  {project.eyebrow}
+                </span>
+              </div>
+              <h1
+                className="font-display font-normal text-white leading-[1.0] tracking-[-0.025em] mb-6"
+                style={{ fontSize: "clamp(3.2rem, 7vw, 6.5rem)" }}
+              >
+                {project.title.split(" ").slice(0, -1).join(" ")}{" "}
+                <em className="italic font-light">
+                  {project.title.split(" ").slice(-1)[0]}
+                </em>
+              </h1>
+              {project.status && (
+                <div className="inline-flex items-center gap-2 border border-white/15 bg-white/8 px-3 py-1.5 rounded-sm">
+                  <span
+                    className={`w-1.5 h-1.5 rounded-full ${
+                      project.status === "completed" ? "bg-green-500" : "bg-oak"
+                    }`}
+                  />
+                  <span className="text-[9px] font-bold tracking-[.14em] uppercase text-white/70">
+                    {formatStatus(project.status)}
+                  </span>
+                </div>
+              )}
+            </div>
+          </Container>
+        </div>
+      </div>
+
+      {/* ── BLACK META STRIP ── */}
+      <div
+        style={{
+          background: "#111111",
+          borderBottom: "1px solid rgba(255,255,255,0.06)",
         }}
-        tags={tags}
-        text={project.shortDescription}
-        title={project.title}
-      />
-
-      <Section className="bg-plaster">
+      >
         <Container>
-          <div className="grid gap-14 lg:grid-cols-[0.68fr_1fr]">
-            <aside className="grid gap-4 lg:sticky lg:top-28 lg:self-start">
-              <div className="border-t border-ink/10 py-4">
-                <p className="text-sm text-ink/45">Status</p>
-                <p className="mt-2 text-base font-medium text-ink">{formatStatus(project.status)}</p>
+          <div className="flex items-stretch overflow-x-auto">
+            {[
+              { label: "Location", value: project.location ?? "—" },
+              {
+                label: "Package",
+                value: project.services.map((s) => serviceLabels[s]).join(" · "),
+              },
+              { label: "Period", value: project.year ?? "Recent work" },
+              { label: "Status", value: formatStatus(project.status) },
+            ].map((item, i) => (
+              <div
+                key={item.label}
+                className={`flex items-center gap-3 py-4 pr-8 ${
+                  i !== 0 ? "pl-8 border-l border-white/[0.08]" : ""
+                } whitespace-nowrap`}
+              >
+                <span
+                  style={{
+                    fontSize: "9px",
+                    fontWeight: 700,
+                    letterSpacing: ".18em",
+                    textTransform: "uppercase",
+                    color: "rgba(255,255,255,.3)",
+                  }}
+                >
+                  {item.label}
+                </span>
+                <span
+                  style={{
+                    fontSize: "12px",
+                    fontWeight: 500,
+                    color: "rgba(255,255,255,.65)",
+                  }}
+                >
+                  {item.value}
+                </span>
               </div>
-              <div className="border-t border-ink/10 py-4">
-                <p className="text-sm text-ink/45">Location</p>
-                <p className="mt-2 text-base font-medium text-ink">{project.location}</p>
-              </div>
-              <div className="border-t border-ink/10 py-4">
-                <p className="text-sm text-ink/45">Package</p>
-                <div className="mt-3 flex flex-wrap gap-2">
-                  {project.services.map((service) => (
-                    <Tag key={service}>{serviceLabels[service]}</Tag>
-                  ))}
-                </div>
-              </div>
-              <div className="border-t border-ink/10 py-4">
-                <p className="text-sm text-ink/45">Period</p>
-                <p className="mt-2 text-base font-medium text-ink">{project.year}</p>
-              </div>
-            </aside>
+            ))}
+            <div className="ml-auto flex items-center gap-3 py-4 pl-8 border-l border-white/[0.08]">
+              {projects.map((p, i) => (
+                <Link
+                  key={p.slug}
+                  href={`/projects/${p.slug}`}
+                  className={`text-[8px] font-bold tracking-[.14em] uppercase transition-colors ${
+                    p.slug === slug
+                      ? "text-oak"
+                      : "text-white/20 hover:text-white/45"
+                  }`}
+                >
+                  <span className="mr-1 text-white/15">
+                    {String(i + 1).padStart(2, "0")}
+                  </span>
+                  {serviceLabels[p.services[0]] ?? p.title.split(" ")[0]}
+                </Link>
+              ))}
+            </div>
+          </div>
+        </Container>
+      </div>
 
-            <div>
-              <p className="text-xl leading-9 text-ink/72 md:text-2xl md:leading-10">
-                {project.fullDescription}
-              </p>
-              <div className="mt-12 grid gap-8 md:grid-cols-2">
-                <div>
-                  <p className="mb-5 text-sm font-medium text-oak">Scope</p>
-                  <ul className="grid gap-3">
-                    {project.scope.map((item) => (
-                      <li className="border-t border-ink/10 py-3 text-base text-ink/70" key={item}>
-                        {item}
-                      </li>
-                    ))}
-                  </ul>
-                </div>
-                <div>
-                  <p className="mb-5 text-sm font-medium text-oak">Outcome</p>
-                  <ul className="grid gap-3">
-                    {project.outcomes.map((item) => (
-                      <li className="border-t border-ink/10 py-3 text-base text-ink/70" key={item}>
-                        {item}
-                      </li>
-                    ))}
-                  </ul>
+      {/* ── CREAM CONTENT AREA ── */}
+      <div style={{ background: "#F4F0EA" }}>
+        <Container>
+
+          {/* ── OVERVIEW ── */}
+          <div
+            style={{
+              padding: "72px 0 60px",
+              borderBottom: "1px solid rgba(26,26,26,0.08)",
+            }}
+          >
+            <div
+              style={{
+                display: "flex",
+                alignItems: "center",
+                gap: 10,
+                marginBottom: 36,
+              }}
+            >
+              <div style={{ height: 1, width: 24, background: "#8B5E3C" }} />
+              <span
+                style={{
+                  fontSize: "9px",
+                  fontWeight: 700,
+                  letterSpacing: ".2em",
+                  textTransform: "uppercase",
+                  color: "#8B5E3C",
+                }}
+              >
+                Project Overview
+              </span>
+            </div>
+
+            <div
+              style={{ display: "grid", gap: "48px", alignItems: "start" }}
+              className="overview-grid"
+            >
+              <style>{`
+                .overview-grid { grid-template-columns: 1fr; }
+                @media(min-width:768px){ .overview-grid { grid-template-columns: 1fr 1fr; } }
+              `}</style>
+
+              <p
+                style={{
+                  fontFamily: "var(--font-display, Georgia, serif)",
+                  fontSize: "clamp(1.35rem, 2.2vw, 1.8rem)",
+                  fontWeight: 300,
+                  lineHeight: 1.55,
+                  letterSpacing: "-0.02em",
+                  color: "#1A1A1A",
+                  margin: 0,
+                }}
+                dangerouslySetInnerHTML={{
+                  __html: project.fullDescription
+                    .replace(/<span[^>]*>/g, "")
+                    .replace(/<\/span>/g, ""),
+                }}
+              />
+
+              <div style={{ paddingTop: 4 }}>
+                <p
+                  style={{
+                    fontSize: "0.9rem",
+                    lineHeight: 1.9,
+                    color: "rgba(26,26,26,0.52)",
+                    margin: "0 0 28px",
+                  }}
+                  dangerouslySetInnerHTML={{
+                    __html: project.shortDescription
+                      .replace(/<span[^>]*>/g, "")
+                      .replace(/<\/span>/g, ""),
+                  }}
+                />
+                <div style={{ display: "flex", flexWrap: "wrap", gap: 8 }}>
+                  {project.services.map((s) => (
+                    <span
+                      key={s}
+                      style={{
+                        border: "1px solid rgba(139,94,60,0.28)",
+                        background: "rgba(139,94,60,0.05)",
+                        color: "#8B5E3C",
+                        padding: "5px 13px",
+                        fontSize: "9px",
+                        fontWeight: 700,
+                        letterSpacing: ".12em",
+                        textTransform: "uppercase",
+                        borderRadius: 2,
+                      }}
+                    >
+                      {serviceLabels[s]}
+                    </span>
+                  ))}
                 </div>
               </div>
             </div>
           </div>
-        </Container>
-      </Section>
 
-      <Section className="bg-white">
-        <Container>
-          <SectionHeader
-            eyebrow="Gallery"
-            text="A measured image sequence showing the package as a piece of commercial interior delivery."
-            title="From technical detail to finished spatial quality."
-          />
-          <div className="mt-14 grid gap-6">
-            {project.gallery.map((image, index) => (
-              <ImageFrame
-                alt={image.alt}
-                aspect={index === 0 ? "aspect-[16/9]" : "aspect-[4/5] md:aspect-[16/12]"}
-                caption={image.caption}
-                key={image.src}
-                sizes={index === 0 ? "100vw" : "(min-width: 1024px) 50vw, 100vw"}
-                src={image.src}
-              />
-            ))}
+          {/* ── SCOPE + OUTCOMES ── */}
+          <div
+            style={{
+              display: "grid",
+              borderBottom: "1px solid rgba(26,26,26,0.08)",
+            }}
+            className="scope-grid"
+          >
+            <style>{`
+              .scope-grid { grid-template-columns: 1fr; }
+              @media(min-width:768px){ .scope-grid { grid-template-columns: 1fr 1fr; } }
+              .scope-col { padding: 48px 0 48px; }
+              @media(min-width:768px){
+                .scope-col { padding: 48px 48px 48px 0; border-right: 1px solid rgba(26,26,26,0.08); border-bottom: none; }
+                .outcomes-col { padding: 48px 0 48px 48px; }
+              }
+              .outcomes-col { padding: 40px 0 48px; border-top: 1px solid rgba(26,26,26,0.08); }
+              @media(min-width:768px){ .outcomes-col { padding: 48px 0 48px 48px; border-top: none; border-left: 1px solid rgba(26,26,26,0.08); } }
+            `}</style>
+
+            {/* Scope */}
+            <div className="scope-col">
+              <p
+                style={{
+                  fontSize: "9px",
+                  fontWeight: 700,
+                  letterSpacing: ".18em",
+                  textTransform: "uppercase",
+                  color: "rgba(26,26,26,0.32)",
+                  marginBottom: 20,
+                }}
+              >
+                Scope of Works
+              </p>
+              {project.scope.map((item, i) => (
+                <div
+                  key={item}
+                  style={{
+                    display: "flex",
+                    alignItems: "flex-start",
+                    gap: 14,
+                    padding: "13px 0",
+                    borderTop:
+                      i === 0 ? "none" : "1px solid rgba(26,26,26,0.06)",
+                  }}
+                >
+                  <span
+                    style={{
+                      width: 18,
+                      height: 18,
+                      flexShrink: 0,
+                      marginTop: 2,
+                      border: "1px solid rgba(139,94,60,0.22)",
+                      background: "rgba(139,94,60,0.04)",
+                      display: "flex",
+                      alignItems: "center",
+                      justifyContent: "center",
+                      borderRadius: 2,
+                    }}
+                  >
+                    <span
+                      style={{
+                        width: 6,
+                        height: 1,
+                        background: "#8B5E3C",
+                        display: "block",
+                      }}
+                    />
+                  </span>
+                  <span
+                    style={{
+                      fontSize: "0.84rem",
+                      color: "#1A1A1A",
+                      lineHeight: 1.65,
+                      fontWeight: 400,
+                    }}
+                  >
+                    {item.replace(/<[^>]*>/g, "")}
+                  </span>
+                </div>
+              ))}
+            </div>
+
+            {/* Outcomes */}
+            <div className="outcomes-col">
+              <p
+                style={{
+                  fontSize: "9px",
+                  fontWeight: 700,
+                  letterSpacing: ".18em",
+                  textTransform: "uppercase",
+                  color: "rgba(26,26,26,0.32)",
+                  marginBottom: 20,
+                }}
+              >
+                Outcomes Delivered
+              </p>
+              {project.outcomes.map((item, i) => (
+                <div
+                  key={item}
+                  style={{
+                    display: "flex",
+                    alignItems: "flex-start",
+                    gap: 14,
+                    padding: "13px 0",
+                    borderTop:
+                      i === 0 ? "none" : "1px solid rgba(26,26,26,0.06)",
+                  }}
+                >
+                  <span
+                    style={{
+                      width: 18,
+                      height: 18,
+                      flexShrink: 0,
+                      marginTop: 2,
+                      background: "rgba(34,120,74,0.08)",
+                      border: "1px solid rgba(34,120,74,0.22)",
+                      display: "flex",
+                      alignItems: "center",
+                      justifyContent: "center",
+                      borderRadius: 2,
+                      fontSize: "9px",
+                      color: "#22784A",
+                      fontWeight: 700,
+                    }}
+                  >
+                    ✓
+                  </span>
+                  <span
+                    style={{
+                      fontSize: "0.84rem",
+                      color: "#1A1A1A",
+                      lineHeight: 1.65,
+                      fontWeight: 400,
+                    }}
+                    dangerouslySetInnerHTML={{
+                      __html: item
+                        .replace(/<[^>]*>/g, "")
+                        .replace(/style="[^"]*"/g, ""),
+                    }}
+                  />
+                </div>
+              ))}
+            </div>
           </div>
+
+          {/* ── GALLERY — 3 images: 2 initial + 1 cinematic final ── */}
+          {project.gallery.length > 0 && (
+            <div style={{ padding: "64px 0 72px" }}>
+
+              {/* Gallery header */}
+              <div
+                style={{
+                  display: "flex",
+                  alignItems: "flex-end",
+                  justifyContent: "space-between",
+                  marginBottom: 36,
+                  paddingBottom: 20,
+                  borderBottom: "1px solid rgba(26,26,26,0.08)",
+                }}
+              >
+                <div>
+                  <div
+                    style={{
+                      display: "flex",
+                      alignItems: "center",
+                      gap: 10,
+                      marginBottom: 10,
+                    }}
+                  >
+                    <div
+                      style={{ height: 1, width: 20, background: "#8B5E3C" }}
+                    />
+                    <span
+                      style={{
+                        fontSize: "9px",
+                        fontWeight: 700,
+                        letterSpacing: ".2em",
+                        textTransform: "uppercase",
+                        color: "#8B5E3C",
+                      }}
+                    >
+                      Gallery
+                    </span>
+                  </div>
+                  <p
+                    style={{
+                      fontFamily: "var(--font-display, Georgia, serif)",
+                      fontSize: "clamp(1.3rem, 2.2vw, 1.9rem)",
+                      fontWeight: 300,
+                      fontStyle: "italic",
+                      color: "#1A1A1A",
+                      letterSpacing: "-0.02em",
+                      margin: 0,
+                    }}
+                  >
+                    Site progress &amp; finished spatial quality.
+                  </p>
+                </div>
+                <span
+                  style={{
+                    fontSize: "9px",
+                    fontWeight: 700,
+                    letterSpacing: ".14em",
+                    textTransform: "uppercase",
+                    color: "rgba(26,26,26,0.25)",
+                  }}
+                >
+                  {project.gallery.length}{" "}
+                  {project.gallery.length === 1 ? "image" : "images"}
+                </span>
+              </div>
+
+              {/* 3-image interactive gallery with lightbox */}
+              <GalleryLightbox images={project.gallery} />
+            </div>
+          )}
+
         </Container>
-      </Section>
+      </div>
+
+      {/* ── NEXT PROJECT — dark strip with background image ── */}
+      {nextProject && (
+        <Link
+          href={`/projects/${nextProject.slug}`}
+          className="block group"
+          style={{ textDecoration: "none" }}
+        >
+          <div
+            style={{
+              position: "relative",
+              overflow: "hidden",
+              minHeight: 240,
+              background: "#111",
+            }}
+          >
+            <Image
+              src={nextProject.heroImage.src}
+              alt={nextProject.heroImage.alt}
+              fill
+              className="object-cover transition-all duration-700 group-hover:opacity-50"
+              sizes="100vw"
+              style={{ opacity: 0.28 }}
+            />
+            <div
+              style={{
+                position: "absolute",
+                inset: 0,
+                background:
+                  "linear-gradient(100deg, rgba(17,17,17,0.97) 30%, rgba(17,17,17,0.6) 100%)",
+              }}
+            />
+            <Container>
+              <div
+                style={{
+                  position: "relative",
+                  zIndex: 1,
+                  display: "flex",
+                  alignItems: "center",
+                  justifyContent: "space-between",
+                  padding: "52px 0",
+                  gap: 24,
+                }}
+                className="next-row"
+              >
+                <style>{`.next-row { flex-direction: row; } @media(max-width:580px){ .next-row { flex-direction: column; align-items: flex-start; } }`}</style>
+                <div>
+                  <p
+                    style={{
+                      fontSize: "9px",
+                      fontWeight: 700,
+                      letterSpacing: ".2em",
+                      textTransform: "uppercase",
+                      color: "rgba(255,255,255,0.22)",
+                      marginBottom: 14,
+                    }}
+                  >
+                    Next project
+                  </p>
+                  <p
+                    style={{
+                      fontFamily: "var(--font-display, Georgia, serif)",
+                      fontSize: "clamp(1.5rem, 2.8vw, 2.6rem)",
+                      fontWeight: 300,
+                      fontStyle: "italic",
+                      color: "rgba(255,255,255,0.72)",
+                      margin: "0 0 16px",
+                      letterSpacing: "-0.025em",
+                      lineHeight: 1.1,
+                      transition: "color 0.3s ease",
+                    }}
+                    className="next-title"
+                  >
+                    <style>{`.group:hover .next-title { color: rgba(255,255,255,0.95) !important; }`}</style>
+                    {nextProject.title}
+                  </p>
+                  <div style={{ display: "flex", gap: 8, flexWrap: "wrap" }}>
+                    {nextProject.services.slice(0, 2).map((s) => (
+                      <span
+                        key={s}
+                        style={{
+                          border: "1px solid rgba(201,162,39,0.28)",
+                          color: "rgba(201,162,39,0.65)",
+                          padding: "3px 10px",
+                          fontSize: "8px",
+                          fontWeight: 700,
+                          letterSpacing: ".12em",
+                          textTransform: "uppercase",
+                          borderRadius: 2,
+                        }}
+                      >
+                        {serviceLabels[s]}
+                      </span>
+                    ))}
+                  </div>
+                </div>
+
+                <div
+                  style={{
+                    display: "flex",
+                    alignItems: "center",
+                    gap: 10,
+                    flexShrink: 0,
+                    color: "#C9A227",
+                    transition: "gap 0.3s ease",
+                  }}
+                  className="next-arrow"
+                >
+                  <style>{`.group:hover .next-arrow { gap: 16px !important; }`}</style>
+                  <span
+                    style={{
+                      fontSize: "10px",
+                      fontWeight: 700,
+                      letterSpacing: ".16em",
+                      textTransform: "uppercase",
+                      color: "rgba(255,255,255,0.3)",
+                    }}
+                  >
+                    View project
+                  </span>
+                  <span style={{ fontSize: 20, lineHeight: 1 }}>→</span>
+                </div>
+              </div>
+            </Container>
+          </div>
+        </Link>
+      )}
 
       <CTASection
         text="Share drawings, scope or programme requirements and N&G Partitions can discuss how the package should be approached."
