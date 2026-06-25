@@ -60,10 +60,13 @@ export const projects: Project[] = [
     featured: true,
     year: "Recent work",
     heroImage: {
-      src: "/assets/images/ceilings/TimberCeilingPackage.png",
-      alt: "Commercial office with timber slat suspended ceiling and integrated lighting",
-      width: 1474,
-      height: 1000,
+      // FIXED — was pointing at a generic mid-construction shot. Now uses the
+      // actual finished-ceiling photo (same file as the gallery's final image),
+      // matching the hero = gallery-final pattern used by Glass Partition Office.
+      src: "/assets/images/ceilings/comerical-officeCelling.png",
+      alt: "Completed suspended ceiling installation across a finished commercial office floor",
+      width: 1244,
+      height: 1496,
       role: "hero"
     },
     gallery: [
