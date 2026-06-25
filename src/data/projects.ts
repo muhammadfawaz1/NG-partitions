@@ -270,7 +270,7 @@ export const projects: Project[] = [
     featured: true,
     year: "Recent work",
     heroImage: {
-      src: "/assets/images/drylining/Drylining.png",
+      src: "/assets/images/acoustics/Drylining.png",
       alt: "Premium boardroom with acoustic wall panels and feature ceiling",
       width: 1170,
       height: 1000,

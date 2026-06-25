@@ -30,6 +30,21 @@ function SectionLabel({ label, tone = "#8B5E3C" }: { label: string; tone?: strin
   );
 }
 
+const GALLERY_GRID_CSS = `
+  .gallery-pair { display: grid; gap: 28px; }
+  .gallery-pair[data-cols="2"] { grid-template-columns: 1fr 1fr; }
+  .gallery-pair[data-cols="3"] { grid-template-columns: 1fr 1fr 1fr; }
+  .gallery-pair[data-cols="4"] { grid-template-columns: repeat(4, 1fr); }
+  @media (max-width: 560px) {
+    .gallery-pair { grid-template-columns: 1fr !important; gap: 32px; }
+  }
+  @media (min-width: 561px) and (max-width: 820px) {
+    .gallery-pair[data-cols="3"], .gallery-pair[data-cols="4"] {
+      grid-template-columns: 1fr 1fr !important;
+    }
+  }
+`;
+
 export function GalleryLightbox({ images }: { images: GalleryImage[] }) {
   const [open, setOpen] = useState<number | null>(null);
   const [hoveredIndex, setHoveredIndex] = useState<number | null>(null);
@@ -69,20 +84,7 @@ export function GalleryLightbox({ images }: { images: GalleryImage[] }) {
   return (
     <>
       {/* ── PHASE IMAGES — variable count (2, 3...), each with its own label above it ── */}
-      <style>{`
-        .gallery-pair { display: grid; gap: 28px; }
-        .gallery-pair[data-cols="2"] { grid-template-columns: 1fr 1fr; }
-        .gallery-pair[data-cols="3"] { grid-template-columns: 1fr 1fr 1fr; }
-        .gallery-pair[data-cols="4"] { grid-template-columns: repeat(4, 1fr); }
-        @media (max-width: 560px) {
-          .gallery-pair { grid-template-columns: 1fr !important; gap: 32px; }
-        }
-        @media (min-width: 561px) and (max-width: 820px) {
-          .gallery-pair[data-cols="3"], .gallery-pair[data-cols="4"] {
-            grid-template-columns: 1fr 1fr !important;
-          }
-        }
-      `}</style>
+      <style dangerouslySetInnerHTML={{ __html: GALLERY_GRID_CSS }} />
 
       <div className="gallery-pair" data-cols={initial.length}>
         {initial.map((img, i) => (
