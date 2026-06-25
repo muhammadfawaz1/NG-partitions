@@ -11,8 +11,6 @@ type GalleryImage = {
 
 // One label treatment, reused above every image in the gallery — thin
 // line + tracked caps. Oak for process shots, gold for the featured result.
-// This is the same device the rest of the page already uses (Project
-// Overview, Scope of Works, Gallery), so the badges stop looking bolted on.
 function SectionLabel({ label, tone = "#8B5E3C" }: { label: string; tone?: string }) {
   return (
     <div style={{ display: "flex", alignItems: "center", gap: 8 }}>
@@ -36,6 +34,13 @@ export function GalleryLightbox({ images }: { images: GalleryImage[] }) {
   const [open, setOpen] = useState<number | null>(null);
   const [hoveredIndex, setHoveredIndex] = useState<number | null>(null);
 
+  // Generalized: every image except the last is a "phase" shot; the last
+  // image is always the final/completed shot — works whether a project has
+  // 2 phase shots + 1 final, or 3 phase shots + 1 final, etc.
+  const finalIndex = images.length - 1;
+  const initial = images.slice(0, finalIndex);
+  const final = images[finalIndex];
+
   const nav = useCallback((dir: number) => {
     setOpen((prev) => prev === null ? null : ((prev + dir + images.length) % images.length));
   }, [images.length]);
@@ -56,25 +61,30 @@ export function GalleryLightbox({ images }: { images: GalleryImage[] }) {
     return () => { document.body.style.overflow = ""; };
   }, [open]);
 
-  const initial = images.slice(0, 2);
-  const final = images[2] ?? images[images.length - 1];
-
   const labelFor = (i: number) => {
-    if (i < 2) return `PHASE ${String(i + 1).padStart(2, "0")}`;
+    if (i < finalIndex) return `PHASE ${String(i + 1).padStart(2, "0")}`;
     return "FINAL RESULT";
   };
 
   return (
     <>
-      {/* ── TWO INITIAL IMAGES — side by side, each with its own label above it ── */}
+      {/* ── PHASE IMAGES — variable count (2, 3...), each with its own label above it ── */}
       <style>{`
-        .gallery-pair { display: grid; grid-template-columns: 1fr 1fr; gap: 28px; }
+        .gallery-pair { display: grid; gap: 28px; }
+        .gallery-pair[data-cols="2"] { grid-template-columns: 1fr 1fr; }
+        .gallery-pair[data-cols="3"] { grid-template-columns: 1fr 1fr 1fr; }
+        .gallery-pair[data-cols="4"] { grid-template-columns: repeat(4, 1fr); }
         @media (max-width: 560px) {
-          .gallery-pair { grid-template-columns: 1fr; gap: 32px; }
+          .gallery-pair { grid-template-columns: 1fr !important; gap: 32px; }
+        }
+        @media (min-width: 561px) and (max-width: 820px) {
+          .gallery-pair[data-cols="3"], .gallery-pair[data-cols="4"] {
+            grid-template-columns: 1fr 1fr !important;
+          }
         }
       `}</style>
 
-      <div className="gallery-pair">
+      <div className="gallery-pair" data-cols={initial.length}>
         {initial.map((img, i) => (
           <div key={img.src}>
             <div style={{ marginBottom: 14 }}>
@@ -94,7 +104,7 @@ export function GalleryLightbox({ images }: { images: GalleryImage[] }) {
               <Image
                 src={img.src} alt={img.alt} fill
                 className="object-cover"
-                sizes="(min-width: 560px) 50vw, 100vw"
+                sizes="(min-width: 820px) 33vw, (min-width: 560px) 50vw, 100vw"
                 style={{ transition: "transform 0.6s ease", transform: hoveredIndex === i ? "scale(1.04)" : "scale(1)" }}
               />
               {/* Bottom scrim — gives the caption a guaranteed dark zone to sit on,
@@ -139,7 +149,7 @@ export function GalleryLightbox({ images }: { images: GalleryImage[] }) {
         ))}
       </div>
 
-      {/* ── FINAL IMAGE — same label system, sized and weighted as the climax ── */}
+      {/* ── FINAL IMAGE — always the last array item, sized as the climax ── */}
       {final && (
         <div style={{ marginTop: 48 }}>
           <div style={{
@@ -157,7 +167,7 @@ export function GalleryLightbox({ images }: { images: GalleryImage[] }) {
           </div>
 
           <button
-            onClick={() => setOpen(images.length - 1)}
+            onClick={() => setOpen(finalIndex)}
             onMouseEnter={() => setHoveredIndex(99)}
             onMouseLeave={() => setHoveredIndex(null)}
             style={{
@@ -184,7 +194,7 @@ export function GalleryLightbox({ images }: { images: GalleryImage[] }) {
                 "linear-gradient(to bottom, rgba(8,6,4,0.32) 0%, rgba(8,6,4,0) 28%)",
             }} />
 
-            {/* Caption — balanced wrapping fixes the orphaned-word line break */}
+            {/* Caption — balanced wrapping avoids orphaned-word line breaks */}
             <div style={{ position: "absolute", bottom: 28, left: 24, right: 24 }}>
               <p style={{
                 fontFamily: "var(--font-display, Georgia, serif)",
@@ -253,11 +263,11 @@ export function GalleryLightbox({ images }: { images: GalleryImage[] }) {
             background: "rgba(8,6,4,0.8)",
           }}>
             <div style={{ display: "flex", alignItems: "center", gap: 12 }}>
-              <div style={{ height: 1, width: 16, background: open >= 2 ? "#C9A227" : "#8B5E3C" }} />
-              <span style={{ fontSize: "9px", fontWeight: 700, letterSpacing: ".2em", textTransform: "uppercase", color: open >= 2 ? "#C9A227" : "#8B5E3C" }}>
+              <div style={{ height: 1, width: 16, background: open === finalIndex ? "#C9A227" : "#8B5E3C" }} />
+              <span style={{ fontSize: "9px", fontWeight: 700, letterSpacing: ".2em", textTransform: "uppercase", color: open === finalIndex ? "#C9A227" : "#8B5E3C" }}>
                 {labelFor(open)}
               </span>
-              {open >= 2 && (
+              {open === finalIndex && (
                 <span style={{ fontSize: "9px", fontWeight: 700, letterSpacing: ".14em", textTransform: "uppercase", color: "rgba(139,94,60,0.7)", marginLeft: 4 }}>
                   ★ Featured
                 </span>
@@ -271,13 +281,12 @@ export function GalleryLightbox({ images }: { images: GalleryImage[] }) {
             </button>
           </div>
 
-          {/* Main image — every slide now gets the same scrim + frame treatment,
-              instead of only the final slide looking "finished" */}
+          {/* Main image */}
           <div
             onClick={(e) => e.stopPropagation()}
             style={{
               position: "relative", width: "min(92vw, 1200px)",
-              aspectRatio: open >= 2 ? "16/9" : "4/3",
+              aspectRatio: open === finalIndex ? "16/9" : "4/3",
               animation: "slideUp 0.3s ease",
               boxShadow: "0 40px 120px rgba(0,0,0,0.8)",
               border: "1px solid rgba(255,255,255,0.08)",
@@ -297,7 +306,7 @@ export function GalleryLightbox({ images }: { images: GalleryImage[] }) {
                 position: "absolute", bottom: 18, left: 22, right: 22,
                 fontFamily: "var(--font-display, Georgia, serif)",
                 fontStyle: "italic", fontWeight: 300,
-                fontSize: open >= 2 ? "clamp(1.1rem, 2.2vw, 1.6rem)" : "0.95rem",
+                fontSize: open === finalIndex ? "clamp(1.1rem, 2.2vw, 1.6rem)" : "0.95rem",
                 color: "rgba(255,255,255,0.85)", margin: 0, letterSpacing: "-0.01em",
                 lineHeight: 1.4,
               }}>

@@ -83,10 +83,21 @@ export const projects: Project[] = [
       },
       {
         src: "/assets/images/ceilings/phase3timber.png",
-        alt: "Completed timber ceiling system with full tile installation",
+        alt: "Tile installation nearing completion across the floorplate",
         width: 924,
         height: 2000,
-        caption: "Completed timber ceiling system with full tile installation."
+        caption: "Tile installation nearing completion across the floorplate."
+      },
+      {
+        // NEW — the non-"phase" file from your ceilings folder, added as the
+        // dedicated final/completed shot. width/height below are placeholders —
+        // replace with the real pixel dimensions (right-click the file →
+        // Properties → Details on Windows) for correct aspect-ratio rendering.
+        src: "/assets/images/ceilings/comerical-officeCelling.png",
+        alt: "Completed suspended ceiling installation across a finished commercial office floor",
+        width: 1244,
+        height: 1496,
+        caption: "A bright, consistent ceiling line across the full floor."
       }
     ],
     scope: [
@@ -179,7 +190,10 @@ export const projects: Project[] = [
     featured: true,
     year: "Recent work",
     heroImage: {
-      src: "/assets/images/drylining/GlassPartitionOffice.png",
+      // FIXED — was "GlassPartitionOffice.png" (no hyphen, different case),
+      // which doesn't match the actual file on disk and would 404 on a
+      // case-sensitive host. Corrected to the real filename below.
+      src: "/assets/images/drylining/glass-partitionOffice.png",
       alt: "Glass partition corridor in completed commercial office interior",
       width: 1351,
       height: 1000,
@@ -201,10 +215,24 @@ export const projects: Project[] = [
         caption: "Glazing panels being fitted into structural frames."
       },
       {
+        // Demoted from "final" to a process shot now that a dedicated final
+        // image exists below — alt/caption rewritten so it reads as a step,
+        // not a finished-space reveal.
         src: "/assets/images/drylining/glasspartphase3.png",
-        alt: "Completed glass partition system — bright open interior",
+        alt: "Final fit-out checks before handover",
         width: 1244,
         height: 1496,
+        caption: "Final fit-out checks and finishing touches before handover."
+      },
+      {
+        // NEW — the non-"phase" file from your drylining folder. Same image as
+        // heroImage (confirmed by filename), now also closing out the gallery
+        // as the true final/completed shot. Carries the caption that used to
+        // sit on phase3, since it actually describes this finished-space photo.
+        src: "/assets/images/drylining/glass-partitionOffice.png",
+        alt: "Completed glass partition system — bright open interior",
+        width: 1351,
+        height: 1000,
         caption: "A bright, uniform landscape ready for occupation."
       }
     ],
