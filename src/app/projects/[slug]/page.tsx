@@ -631,3 +631,7 @@ export default async function ProjectDetailPage({ params }: ProjectPageProps) {
     </>
   );
 }
+
+
+
+

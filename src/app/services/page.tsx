@@ -30,7 +30,7 @@ const disciplines = [
       "Board-ready frame preparation",
     ],
     image: {
-      src: "/assets/images/hero/sfs-exterior-build.png",
+      src: "/assets/images/sfs/sfs-exterior-build.webp",
       alt: "Multi-storey commercial building with exposed steel framing system under construction",
     },
     href: "/services/steel-framing-systems",
@@ -50,7 +50,7 @@ const disciplines = [
       "Jointing preparation",
     ],
     image: {
-      src: "/assets/images/hero/open-office-ceiling.png",
+      src: "/assets/images/ceilings/open-office-ceiling.webp",
       alt: "Completed open-plan commercial office with clean drylining and suspended ceiling grid",
     },
     href: "/services/drylining-partitions",
@@ -70,7 +70,7 @@ const disciplines = [
       "Access panel integration",
     ],
     image: {
-      src: "/assets/images/hero/open-office-ceiling-2.png",
+      src: "/assets/images/ceilings/open-office-ceiling-2.webp",
       alt: "Commercial open-plan office with precision suspended ceiling grid and integrated lighting",
     },
     href: "/services/suspended-ceilings",
@@ -90,7 +90,7 @@ const disciplines = [
       "Performance-led detailing",
     ],
     image: {
-      src: "/assets/images/hero/timber-slat-corridor.png",
+      src: "/assets/images/timber/timber-slat-corridor.webp",
       alt: "Premium commercial corridor with timber slat acoustic ceiling treatment and warm lighting",
     },
     href: "/services/acoustic-solutions",
@@ -106,7 +106,7 @@ export default function ServicesPage() {
       <PageHero
         eyebrow="Services"
         image={{
-          src: "/assets/images/hero/services-hero.png",
+          src: "/assets/images/hero/services-hero.webp",
           alt: "Premium commercial interior with timber slat ceiling, floor-to-ceiling glazing and city views — delivered by N&G Partitions",
         }}
         text="Specialist construction packages for commercial interiors that require technical accuracy and a refined finished presence."
@@ -338,3 +338,9 @@ function DisciplinePanel({ disc, index }: { disc: Disc; index: number }) {
     </article>
   );
 }
+
+
+
+
+
+

@@ -382,7 +382,7 @@ export default function ContactPage() {
 
       <PageHero
         eyebrow="Contact"
-        image={{ src:"/assets/images/hero/lobby-reception.jpeg", alt:"Premium commercial reception interior" }}
+        image={{ src:"/assets/images/hero/lobby-reception.webp", alt:"Premium commercial reception interior" }}
         text="Discuss commercial interior packages, current project requirements or upcoming tender opportunities."
         title="Start the conversation with N&G Partitions."
       />
@@ -708,3 +708,9 @@ function FLabel({ id, text, req }: { id:string; text:string; req?:boolean }) {
     </label>
   );
 }
+
+
+
+
+
+

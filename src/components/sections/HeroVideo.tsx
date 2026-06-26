@@ -24,7 +24,7 @@ export function HeroVideo() {
         fill
         priority
         sizes="100vw"
-        src="/assets/images/hero/lobby-reception.jpeg"
+        src="/assets/images/hero/lobby-reception.webp"
       />
 
       <video
@@ -36,7 +36,7 @@ export function HeroVideo() {
         muted
         onCanPlayThrough={() => setVideoLoaded(true)}
         playsInline
-        poster="/assets/images/hero/lobby-reception.jpeg"
+        poster="/assets/images/hero/lobby-reception.webp"
         preload="metadata"
         style={{
           opacity: videoLoaded ? 1 : 0,
@@ -136,3 +136,9 @@ export function HeroVideo() {
     </section>
   );
 }
+
+
+
+
+
+

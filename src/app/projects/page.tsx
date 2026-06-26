@@ -21,7 +21,7 @@ export default function ProjectsPage() {
       <PageHero
         eyebrow="Projects"
         image={{
-          src: "/assets/images/hero/open-office-wide.jpeg",
+          src: "/assets/images/ceilings/open-office-wide.webp",
           alt: "Completed open-plan commercial office with suspended ceiling"
         }}
         text="A growing portfolio of commercial interiors presented through image-led case studies and technical scope."
@@ -51,3 +51,9 @@ export default function ProjectsPage() {
     </>
   );
 }
+
+
+
+
+
+

@@ -27,26 +27,26 @@ export const services: Service[] = [
     overview:
       "N&G Partitions delivers SFS packages with a focus on accurate setting-out, interface control and practical coordination between structure, envelope, openings and follow-on trades.",
     heroImage: {
-      src: "/assets/images/sfs/exterior-framework.jpeg",
+      src: "/assets/images/sfs/exterior-framework.webp",
       alt: "External steel framing system on a multi-storey commercial building",
       width: 1126,
       height: 2000
     },
     gallery: [
       {
-        src: "/assets/images/sfs/interior-framework-wide.jpeg",
+        src: "/assets/images/sfs/interior-framework-wide.webp",
         alt: "Tall internal SFS frame inside a commercial construction site",
         width: 1126,
         height: 2000
       },
       {
-        src: "/assets/images/sfs/stud-framework-interior.jpeg",
+        src: "/assets/images/sfs/stud-framework-interior.webp",
         alt: "Interior metal stud framework with service openings",
         width: 1244,
         height: 1496
       },
       {
-        src: "/assets/images/sfs/mixed-structure-interior.jpeg",
+        src: "/assets/images/sfs/mixed-structure-interior.webp",
         alt: "Commercial SFS and timber-backed partition framework",
         width: 1324,
         height: 1496
@@ -82,20 +82,20 @@ export const services: Service[] = [
     overview:
       "From corridor packages to large interior layouts, N&G Partitions creates defined spaces with efficient metal stud systems, board installation and careful service coordination.",
     heroImage: {
-      src: "/assets/images/drylining/corridor-construction.jpeg",
+      src: "/assets/images/drylining/corridor-construction.webp",
       alt: "Drylined commercial corridor under construction with service runs above",
       width: 900,
       height: 1600
     },
     gallery: [
       {
-        src: "/assets/images/drylining/installed-panels.jpeg",
+        src: "/assets/images/drylining/installed-panels.webp",
         alt: "Installed drylining panels on a commercial partition wall",
         width: 2048,
         height: 2048
       },
       {
-        src: "/assets/images/sfs/stud-framework-interior.jpeg",
+        src: "/assets/images/sfs/stud-framework-interior.webp",
         alt: "Metal stud partition framework before board installation",
         width: 1244,
         height: 1496
@@ -131,26 +131,26 @@ export const services: Service[] = [
     overview:
       "N&G Partitions installs suspended ceilings with careful attention to grid alignment, lighting coordination, perimeter detail and the finished rhythm of the room.",
     heroImage: {
-      src: "/assets/images/hero/open-office-wide.jpeg",
+      src: "/assets/images/ceilings/open-office-wide.webp",
       alt: "Large completed open-plan commercial office with suspended ceiling grid",
       width: 2048,
       height: 1405
     },
     gallery: [
       {
-        src: "/assets/images/ceilings/ceiling-grid-closeup.jpeg",
+        src: "/assets/images/ceilings/ceiling-grid-closeup.webp",
         alt: "Close detail of suspended ceiling grid with integrated lights",
         width: 1080,
         height: 1152
       },
       {
-        src: "/assets/images/ceilings/exposed-ceiling-framework.jpeg",
+        src: "/assets/images/ceilings/exposed-ceiling-framework.webp",
         alt: "Exposed ceiling framework before tile installation",
         width: 924,
         height: 2000
       },
       {
-        src: "/assets/images/hero/open-office-suspended-ceiling-overview.jpeg",
+        src: "/assets/images/hero/open-office-suspended-ceiling-overview.webp",
         alt: "Bright commercial open-plan office with finished ceiling",
         width: 1840,
         height: 1228
@@ -186,20 +186,20 @@ export const services: Service[] = [
     overview:
       "From acoustic feature ceilings to partition build-ups, N&G Partitions helps shape interiors that look composed and perform for the people using them every day.",
     heroImage: {
-      src: "/assets/images/acoustics/black-baffle-acoustic-ceiling.jpeg",
+      src: "/assets/images/acoustics/black-baffle-acoustic-ceiling.webp",
       alt: "Black acoustic baffle ceiling in a commercial corridor",
       width: 1080,
       height: 1274
     },
     gallery: [
       {
-        src: "/assets/images/hero/wood-slat-corridor.jpeg",
+        src: "/assets/images/hero/wood-slat-corridor.webp",
         alt: "Commercial corridor with timber slat ceiling treatment",
         width: 1612,
         height: 1962
       },
       {
-        src: "/assets/images/hero/lobby-reception.jpeg",
+        src: "/assets/images/hero/lobby-reception.webp",
         alt: "Premium lobby interior with feature wall and linear lighting",
         width: 1254,
         height: 836
@@ -232,3 +232,9 @@ export const services: Service[] = [
 export function getService(slug: string) {
   return services.find((service) => service.slug === slug);
 }
+
+
+
+
+
+

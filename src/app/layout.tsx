@@ -15,7 +15,7 @@ export const metadata: Metadata = {
   openGraph: {
     title: "N&G Partitions LTD",
     description: site.description,
-    images: ["/assets/images/hero/lobby-reception.jpeg"],
+    images: ["/assets/images/hero/lobby-reception.webp"],
     locale: "en_GB",
     siteName: "N&G Partitions",
     type: "website"
@@ -37,3 +37,9 @@ export default function RootLayout({ children }: Readonly<{ children: React.Reac
     </html>
   );
 }
+
+
+
+
+
+

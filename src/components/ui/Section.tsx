@@ -9,3 +9,9 @@ type SectionProps = {
 export function Section({ children, className }: SectionProps) {
   return <section className={cn(className)}>{children}</section>;
 }
+
+
+
+
+
+

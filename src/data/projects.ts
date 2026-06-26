@@ -63,7 +63,7 @@ export const projects: Project[] = [
       // FIXED — was pointing at a generic mid-construction shot. Now uses the
       // actual finished-ceiling photo (same file as the gallery's final image),
       // matching the hero = gallery-final pattern used by Glass Partition Office.
-      src: "/assets/images/ceilings/comerical-officeCelling.png",
+      src: "/assets/images/ceilings/comerical-officeCelling.webp",
       alt: "Completed suspended ceiling installation across a finished commercial office floor",
       width: 1244,
       height: 1496,
@@ -71,21 +71,21 @@ export const projects: Project[] = [
     },
     gallery: [
       {
-        src: "/assets/images/ceilings/phase1timber.png",
+        src: "/assets/images/timber/phase1timber.webp",
         alt: "Timber ceiling framework being set out on site",
         width: 1080,
         height: 1152,
         caption: "Timber ceiling framework being set out on site."
       },
       {
-        src: "/assets/images/ceilings/phase2timber.png",
+        src: "/assets/images/timber/phase2timber.webp",
         alt: "Grid alignment and lighting integration mid-install",
         width: 1840,
         height: 1228,
         caption: "Grid alignment and lighting integration mid-install."
       },
       {
-        src: "/assets/images/ceilings/phase3timber.png",
+        src: "/assets/images/timber/phase3timber.webp",
         alt: "Completed timber ceiling system with full tile installation",
         width: 924,
         height: 2000,
@@ -123,7 +123,7 @@ export const projects: Project[] = [
     featured: true,
     year: "Recent work",
     heroImage: {
-      src: "/assets/images/sfs/StructuralFraming.png",
+      src: "/assets/images/sfs/StructuralFraming.webp",
       alt: "Steel structural framing system inside commercial construction site",
       width: 1381,
       height: 1000,
@@ -131,21 +131,21 @@ export const projects: Project[] = [
     },
     gallery: [
       {
-        src: "/assets/images/sfs/sfsphase1.png",
+        src: "/assets/images/sfs/sfsphase1.webp",
         alt: "Steel frame system set out to structural drawings",
         width: 1126,
         height: 2000,
         caption: "Steel frame system set out to structural drawings."
       },
       {
-        src: "/assets/images/sfs/sfsphase2.png",
+        src: "/assets/images/sfs/sfsphase2.webp",
         alt: "Secondary framing and sheathing board progression",
         width: 1244,
         height: 1496,
         caption: "Secondary framing and sheathing board progression."
       },
       {
-        src: "/assets/images/sfs/spsphase3.png",
+        src: "/assets/images/sfs/spsphase3.webp",
         alt: "Completed SFS envelope ready for facade build-up",
         width: 1324,
         height: 1496,
@@ -182,10 +182,10 @@ export const projects: Project[] = [
     featured: true,
     year: "Recent work",
     heroImage: {
-      // FIXED — was "GlassPartitionOffice.png" (no hyphen, different case),
+      // FIXED — was "GlassPartitionOffice.webp" (no hyphen, different case),
       // which doesn't match the actual file on disk and would 404 on a
       // case-sensitive host. Corrected to the real filename below.
-      src: "/assets/images/drylining/glass-partitionOffice.png",
+      src: "/assets/images/drylining/glass-partitionOffice.webp",
       alt: "Glass partition corridor in completed commercial office interior",
       width: 1351,
       height: 1000,
@@ -193,21 +193,21 @@ export const projects: Project[] = [
     },
     gallery: [
       {
-        src: "/assets/images/drylining/glasspartphase1.png",
+        src: "/assets/images/glass/glasspartphase1.webp",
         alt: "Initial framing and partition track layout",
         width: 2048,
         height: 2048,
         caption: "Initial framing and partition track layout."
       },
       {
-        src: "/assets/images/drylining/glasspartphase2.png",
+        src: "/assets/images/glass/glasspartphase2.webp",
         alt: "Glazing panels being fitted into structural frames",
         width: 1244,
         height: 1496,
         caption: "Glazing panels being fitted into structural frames."
       },
       {
-        src: "/assets/images/drylining/glasspartphase3.png",
+        src: "/assets/images/glass/glasspartphase3.webp",
         alt: "Completed glass partition system — bright open interior",
         width: 1244,
         height: 1496,
@@ -245,7 +245,7 @@ export const projects: Project[] = [
     featured: true,
     year: "Recent work",
     heroImage: {
-      src: "/assets/images/acoustics/Drylining.png",
+      src: "/assets/images/drylining/Drylining.webp",
       alt: "Premium boardroom with acoustic wall panels and feature ceiling",
       width: 1170,
       height: 1000,
@@ -253,21 +253,21 @@ export const projects: Project[] = [
     },
     gallery: [
       {
-        src: "/assets/images/acoustics/accousticphase1.png",
+        src: "/assets/images/acoustics/accousticphase1.webp",
         alt: "Acoustic substrate and backing system installed",
         width: 1612,
         height: 1962,
         caption: "Acoustic substrate and backing system installed."
       },
       {
-        src: "/assets/images/acoustics/accousticphase2.png",
+        src: "/assets/images/acoustics/accousticphase2.webp",
         alt: "Panel faces aligned and fixed to primary structure",
         width: 1080,
         height: 1274,
         caption: "Panel faces aligned and fixed to primary structure."
       },
       {
-        src: "/assets/images/acoustics/accousticphase3.png",
+        src: "/assets/images/acoustics/accousticphase3.webp",
         alt: "High-performance acoustic wall system fully dressed",
         width: 1080,
         height: 1274,
@@ -298,3 +298,9 @@ export function getProject(slug: string) {
 }
 
 export const featuredProjects = projects.filter((project) => project.featured);
+
+
+
+
+
+
