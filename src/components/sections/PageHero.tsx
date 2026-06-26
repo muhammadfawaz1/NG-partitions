@@ -57,13 +57,14 @@ export function PageHero({
         </>
       )}
 
-      {/* ── Content ── */}
+      {/* ── Content ──
+          CHANGED: was items-end (text glued to the bottom edge, leaving a large
+          unbalanced gap above). Now items-center so the block sits with even
+          breathing room above and below, regardless of how tall min-h is. */}
       <Container
         className={[
           "relative flex",
-          isCinematic
-            ? "min-h-[72svh] items-end pb-16 md:pb-20"
-            : "min-h-[58svh] items-end pb-14",
+          isCinematic ? "min-h-[72svh] items-center" : "min-h-[58svh] items-center",
         ].join(" ")}
       >
         <div className={isCinematic ? "max-w-4xl" : "max-w-5xl"}>

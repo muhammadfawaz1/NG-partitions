@@ -83,9 +83,9 @@ export default async function ProjectDetailPage({ params }: ProjectPageProps) {
           ))}
         </div>
 
-        <div className="absolute bottom-0 left-0 right-0 z-10">
+        <div className="absolute inset-0 z-10 flex flex-col justify-center">
           <Container>
-            <div className="pb-10">
+            <div className="max-w-2xl">
               <div className="flex items-center gap-3 mb-4">
                 <div className="h-px w-6 bg-oak" />
                 <span className="text-[9px] font-bold tracking-[.2em] uppercase text-oak">
@@ -93,26 +93,20 @@ export default async function ProjectDetailPage({ params }: ProjectPageProps) {
                 </span>
               </div>
               <h1
-                className="font-display font-normal text-white leading-[1.0] tracking-[-0.025em] mb-6"
-                style={{ fontSize: "clamp(3.2rem, 7vw, 6.5rem)" }}
+                className="font-display font-normal text-white leading-[1.05] tracking-[-0.02em] mb-6"
+                style={{ fontSize: "clamp(2.8rem, 6vw, 5.5rem)" }}
               >
-                {project.title.split(" ").slice(0, -1).join(" ")}{" "}
-                <em className="italic font-light">
-                  {project.title.split(" ").slice(-1)[0]}
-                </em>
+                {project.title}
               </h1>
-              {project.status && (
-                <div className="inline-flex items-center gap-2 border border-white/15 bg-white/8 px-3 py-1.5 rounded-sm">
-                  <span
-                    className={`w-1.5 h-1.5 rounded-full ${
-                      project.status === "completed" ? "bg-green-500" : "bg-oak"
-                    }`}
-                  />
-                  <span className="text-[9px] font-bold tracking-[.14em] uppercase text-white/70">
-                    {formatStatus(project.status)}
-                  </span>
-                </div>
-              )}
+              <p
+                className="max-w-md text-sm leading-7 text-white/55 md:text-base md:leading-8"
+                style={{ borderLeft: "1px solid rgba(255,255,255,0.15)", paddingLeft: 16 }}
+                dangerouslySetInnerHTML={{
+                  __html: project.shortDescription
+                    .replace(/<span[^>]*>/g, "")
+                    .replace(/<\/span>/g, ""),
+                }}
+              />
             </div>
           </Container>
         </div>
@@ -259,23 +253,23 @@ export default async function ProjectDetailPage({ params }: ProjectPageProps) {
                       .replace(/<\/span>/g, ""),
                   }}
                 />
-                <div style={{ display: "flex", flexWrap: "wrap", gap: 8 }}>
-                  {project.services.map((s) => (
-                    <span
-                      key={s}
-                      style={{
-                        border: "1px solid rgba(139,94,60,0.28)",
-                        background: "rgba(139,94,60,0.05)",
-                        color: "#8B5E3C",
-                        padding: "5px 13px",
-                        fontSize: "9px",
-                        fontWeight: 700,
-                        letterSpacing: ".12em",
-                        textTransform: "uppercase",
-                        borderRadius: 2,
-                      }}
-                    >
-                      {serviceLabels[s]}
+                <div style={{ display: "flex", flexWrap: "wrap", alignItems: "center", gap: 10 }}>
+                  {project.services.map((s, i) => (
+                    <span key={s} style={{ display: "inline-flex", alignItems: "center", gap: 10 }}>
+                      {i > 0 && (
+                        <span style={{ width: 3, height: 3, borderRadius: "50%", background: "rgba(139,94,60,0.4)" }} />
+                      )}
+                      <span
+                        style={{
+                          color: "#8B5E3C",
+                          fontSize: "9px",
+                          fontWeight: 700,
+                          letterSpacing: ".16em",
+                          textTransform: "uppercase",
+                        }}
+                      >
+                        {serviceLabels[s]}
+                      </span>
                     </span>
                   ))}
                 </div>
