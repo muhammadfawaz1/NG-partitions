@@ -170,58 +170,111 @@ export default function Home() {
       <ProcessSection />
       <TestimonialsSection />
 
-      {/* TRUST SIGNALS — flat fact panels, deliberately not styled as cards/buttons */}
+      {/* TRUST SIGNALS
+          Two-column layout where BOTH columns share the same CSS grid row tracks.
+          The outer wrapper is a 2-col grid; inside each column sits a header block
+          then 4 item rows. To lock rows across columns we use a single CSS subgrid
+          spanning all rows: [header] + [4 items] = 5 rows total per column.
+          Each item row has 3 sub-rows: icon · title · subtitle — but we collapse
+          them into a single flex row (icon | text block) so one grid row = one item.
+      */}
       <Section className="bg-[#f5f0e8] py-24 md:py-32">
         <Container>
-          <div className="grid gap-10 lg:grid-cols-2">
+          {/*
+            Outer grid: 2 equal columns.
+            We use `grid-rows-[auto_repeat(4,1fr)]` so row 0 = column headers,
+            rows 1-4 = the 4 items. Both columns are children of the SAME grid,
+            so their rows are automatically locked together.
+          */}
+          <div
+            className="grid grid-cols-1 gap-x-16 lg:grid-cols-2"
+            style={{
+              gridTemplateRows: "auto auto auto auto auto", // header + 4 item rows
+            }}
+          >
+            {/* ── LEFT COLUMN HEADER (row 1) ── */}
             <FadeIn>
               <p className="mb-4 border-b border-[#e0d8cc] pb-3 text-[10px] font-medium uppercase tracking-[0.16em] text-ink/40">
                 Accreditations & Compliance
               </p>
-              <div className="rounded-lg border border-[#e8e0d4] bg-white px-6">
-                <div className="divide-y divide-[#ece4d8]">
-                  {[
-                    { label: "RAMS-led planning", sub: "Risk & method statements" },
-                    { label: "Qualified site teams", sub: "Trained & accredited operatives" },
-                    { label: "Manufacturer-aligned systems", sub: "Spec-matched installations" },
-                    { label: "Documentation-ready handover", sub: "Full O&M pack on completion" },
-                  ].map((item) => (
-                    <div key={item.label} className="flex items-center gap-4 py-4">
-                      <span className="text-sm font-medium text-oak" aria-hidden="true">
-                        ✓
-                      </span>
-                      <div>
-                        <p className="text-sm font-medium text-ink">{item.label}</p>
-                        <p className="text-xs text-ink/40">{item.sub}</p>
-                      </div>
-                    </div>
-                  ))}
-                </div>
+              <div className="mb-2">
+                <div className="mb-1 h-0.5 w-6 bg-oak" />
+                <h3 className="font-display text-[clamp(1.4rem,2.5vw,2rem)] font-normal leading-snug tracking-[-0.02em] text-ink">
+                  Built on verified practice
+                </h3>
+                <p className="mt-2 text-sm leading-6 text-ink/50">
+                  Every project is planned, executed and handed over in line with industry standards and manufacturer requirements.
+                </p>
               </div>
             </FadeIn>
 
-            <FadeIn delay={0.08}>
+            {/* ── RIGHT COLUMN HEADER (row 1, same grid row) ── */}
+            <FadeIn delay={0.05}>
               <p className="mb-4 border-b border-[#e0d8cc] pb-3 text-[10px] font-medium uppercase tracking-[0.16em] text-ink/40">
                 Specified Systems
               </p>
-              <div className="rounded-lg border border-[#e8e0d4] bg-white">
-                <div className="flex flex-wrap divide-x divide-[#ece4d8]">
-                  {[
-                    { name: "British Gypsum", sub: "Drylining & boards" },
-                    { name: "Knauf", sub: "Partition boards" },
-                    { name: "Armstrong", sub: "Ceiling tiles" },
-                    { name: "Gypframe", sub: "Steel framing" },
-                    { name: "Rockfon", sub: "Acoustic wool" },
-                    { name: "SAS Ceilings", sub: "Bespoke solutions" },
-                  ].map((item) => (
-                    <div key={item.name} className="flex-1 basis-1/3 min-w-[140px] px-5 py-5 text-center">
-                      <p className="text-xs font-medium uppercase tracking-[0.04em] text-ink/70">{item.name}</p>
-                      <p className="mt-1 text-[10px] text-ink/35">{item.sub}</p>
-                    </div>
-                  ))}
-                </div>
+              <div className="mb-2">
+                <div className="mb-1 h-0.5 w-6 bg-[#6b7793]" />
+                <h3 className="font-display text-[clamp(1.4rem,2.5vw,2rem)] font-normal leading-snug tracking-[-0.02em] text-ink">
+                  Approved manufacturer partners
+                </h3>
+                <p className="mt-2 text-sm leading-6 text-ink/50">
+                  We install systems from the UK's leading drylining and ceiling manufacturers, specified to project requirements.
+                </p>
               </div>
             </FadeIn>
+
+            {/* ── ITEMS: rendered as a shared 4-row subgrid across both columns ──
+                We flatten the 2 × 4 items into a single grid continuation so each
+                pair of left+right items occupies the same grid row track.
+                Pattern: left[0], right[0], left[1], right[1], left[2], right[2], left[3], right[3]
+            */}
+            {[
+              {
+                left:  { label: "RAMS-led planning",              sub: "Risk & method statements",         icon: "◈", color: "text-oak" },
+                right: { name:  "British Gypsum",                 sub: "Drylining & boards",               icon: "▦", color: "text-[#4d7fb8]" },
+              },
+              {
+                left:  { label: "Qualified site teams",           sub: "Trained & accredited operatives",  icon: "◎", color: "text-[#4f8f5b]" },
+                right: { name:  "Knauf",                          sub: "Partition boards",                 icon: "⬡", color: "text-oak" },
+              },
+              {
+                left:  { label: "Manufacturer-aligned systems",   sub: "Spec-matched installations",       icon: "▥", color: "text-[#6b7793]" },
+                right: { name:  "Armstrong",                      sub: "Ceiling tiles",                    icon: "⊞", color: "text-[#4f8f5b]" },
+              },
+              {
+                left:  { label: "Documentation-ready handover",   sub: "Full O&M pack on completion",      icon: "▧", color: "text-[#4d7fb8]" },
+                right: { name:  "Gypframe",                       sub: "Steel framing",                    icon: "⊟", color: "text-[#6b7793]" },
+              },
+            ].map((pair, i) => (
+              <>
+                {/* LEFT item — occupies column 1 of the shared grid */}
+                <FadeIn delay={i * 0.06} key={`left-${i}`}>
+                  <div className="flex items-start gap-4 border-t border-[#e0d8cc] py-5">
+                    <span className={`mt-0.5 w-5 shrink-0 font-display text-lg ${pair.left.color}`} aria-hidden="true">
+                      {pair.left.icon}
+                    </span>
+                    <div>
+                      <p className="text-sm font-medium text-ink">{pair.left.label}</p>
+                      <p className="mt-0.5 text-xs text-ink/40">{pair.left.sub}</p>
+                    </div>
+                  </div>
+                </FadeIn>
+
+                {/* RIGHT item — occupies column 2 of the same shared grid row */}
+                <FadeIn delay={i * 0.06 + 0.04} key={`right-${i}`}>
+                  <div className="flex items-start gap-4 border-t border-[#e0d8cc] py-5">
+                    <span className={`mt-0.5 w-5 shrink-0 font-display text-lg ${pair.right.color}`} aria-hidden="true">
+                      {pair.right.icon}
+                    </span>
+                    <div>
+                      <p className="text-sm font-medium text-ink">{pair.right.name}</p>
+                      <p className="mt-0.5 text-xs text-ink/40">{pair.right.sub}</p>
+                    </div>
+                  </div>
+                </FadeIn>
+              </>
+            ))}
           </div>
         </Container>
       </Section>
@@ -230,6 +283,9 @@ export default function Home() {
     </>
   );
 }
+
+
+
 
 
 
