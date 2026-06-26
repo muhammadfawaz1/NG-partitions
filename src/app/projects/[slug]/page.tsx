@@ -42,8 +42,13 @@ export default async function ProjectDetailPage({ params }: ProjectPageProps) {
 
   return (
     <>
-      {/* ── HERO ── */}
-      <div className="relative min-h-[100vh] overflow-hidden bg-ink">
+      {/* ── HERO ──
+          Height reduced from min-h-[100vh] (full viewport) to roughly match
+          the proportions of the Services page's PageHero "cinematic" variant.
+          This is an estimate based on the screenshot, not a guaranteed exact
+          match — share PageHero.tsx if you want this pixel-identical instead
+          of just visually close. */}
+      <div className="relative min-h-[78vh] overflow-hidden bg-ink">
         <Image
           src={project.heroImage.src}
           alt={project.heroImage.alt}
@@ -80,7 +85,7 @@ export default async function ProjectDetailPage({ params }: ProjectPageProps) {
 
         <div className="absolute bottom-0 left-0 right-0 z-10">
           <Container>
-            <div className="pb-14">
+            <div className="pb-10">
               <div className="flex items-center gap-3 mb-4">
                 <div className="h-px w-6 bg-oak" />
                 <span className="text-[9px] font-bold tracking-[.2em] uppercase text-oak">
@@ -424,7 +429,7 @@ export default async function ProjectDetailPage({ params }: ProjectPageProps) {
             </div>
           </div>
 
-          {/* ── GALLERY — 3 images: 2 initial + 1 cinematic final ── */}
+          {/* ── GALLERY ── */}
           {project.gallery.length > 0 && (
             <div style={{ padding: "64px 0 72px" }}>
 
@@ -491,7 +496,6 @@ export default async function ProjectDetailPage({ params }: ProjectPageProps) {
                 </span>
               </div>
 
-              {/* 3-image interactive gallery with lightbox */}
               <GalleryLightbox images={project.gallery} />
             </div>
           )}
@@ -499,7 +503,7 @@ export default async function ProjectDetailPage({ params }: ProjectPageProps) {
         </Container>
       </div>
 
-      {/* ── NEXT PROJECT — dark strip with background image ── */}
+      {/* ── NEXT PROJECT ── */}
       {nextProject && (
         <Link
           href={`/projects/${nextProject.slug}`}

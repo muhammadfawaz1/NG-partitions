@@ -26,13 +26,13 @@ export default function ProjectsPage() {
         }}
         text="A growing portfolio of commercial interiors presented through image-led case studies and technical scope."
         title="Case studies with construction substance."
+        variant="cinematic"
       />
 
       <Section className="bg-plaster pb-20 lg:pb-28">
         <Container>
-          
+
           <SectionHeader
-            eyebrow="Selected Work"
             text="Each project is structured to show scope, technical detail and the quality of the finished or in-progress package."
             title="Commercial interior packages, documented with clarity."
           />
