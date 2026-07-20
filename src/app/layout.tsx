@@ -23,6 +23,9 @@ export const metadata: Metadata = {
   robots: {
     index: true,
     follow: true
+  },
+  verification: {
+    google: "acGV27rniP4_muSyp_bfahUNq2t7MiIBwZiOuSPwT7I"
   }
 };
 
@@ -37,9 +40,3 @@ export default function RootLayout({ children }: Readonly<{ children: React.Reac
     </html>
   );
 }
-
-
-
-
-
-
