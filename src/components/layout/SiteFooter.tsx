@@ -4,6 +4,7 @@ import { Mail, MapPin, Phone } from "lucide-react";
 import { navigation, site } from "@/data/site";
 import { services } from "@/data/services";
 import { Container } from "@/components/ui/Container";
+import { PoweredBy } from "@/components/layout/PoweredBy";
 
 export function SiteFooter() {
   return (
@@ -65,6 +66,7 @@ export function SiteFooter() {
           <p>{site.domain}</p>
         </div>
       </Container>
+      <PoweredBy />
     </footer>
   );
 }

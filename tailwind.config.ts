@@ -21,7 +21,8 @@ const config: Config = {
       },
       fontFamily: {
         sans: ["Inter", "Avenir Next", "Helvetica Neue", "Arial", "sans-serif"],
-        display: ["Cormorant Garamond", "Optima", "Georgia", "serif"]
+        display: ["Cormorant Garamond", "Optima", "Georgia", "serif"],
+        brand: ["Syne", "Inter", "sans-serif"]
       },
       boxShadow: {
         architectural: "0 24px 70px rgba(18, 20, 22, 0.12)",
